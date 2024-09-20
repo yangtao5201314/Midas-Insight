@@ -2,15 +2,14 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-19 09:48:21
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-20 16:42:02
+ * @LastEditTime: 2024-09-20 17:49:17
  * @FilePath: \vite3\src\view\login\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
 import { ref,reactive, onMounted,resolveComponent,onBeforeUnmount  } from "vue";
-// import Tabs from '@/components/tabs.vue'
+import Facts from '@/components/Facts.vue'
 import { ElMessage } from 'element-plus'
-// import { BellFilled } from '@element-plus/icons-vue'; // 确保引入所需的图标
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -166,7 +165,9 @@ onMounted(async () => {
            </div>
        </header>
        <main class="mainBox">
-           <div v-if="currentTab == 0">实况1</div>
+           <div v-if="currentTab == 0">
+               <Facts />
+           </div>
            <div v-if="currentTab == 1">趋势</div>
            <div v-if="currentTab == 2">统计</div>
            <div v-if="currentTab == 3">设备信息</div>
