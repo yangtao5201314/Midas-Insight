@@ -166,7 +166,7 @@ onMounted(async () => {
            </div>
        </header>
        <main class="mainBox">
-           <div v-if="currentTab == 0">实况</div>
+           <div v-if="currentTab == 0">实况1</div>
            <div v-if="currentTab == 1">趋势</div>
            <div v-if="currentTab == 2">统计</div>
            <div v-if="currentTab == 3">设备信息</div>
