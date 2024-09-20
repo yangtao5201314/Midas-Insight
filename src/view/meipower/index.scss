@@ -1,0 +1,91 @@
+.meiBody {
+	backface-visibility: hidden;
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	min-height: 100vh;
+	position: relative;
+	// background: #050505;
+	.headBox {
+		top: 0px;
+		z-index: 1004;
+		transform: translateY(0%);
+		position: fixed;
+		left: 0px;
+		width: 100vw;
+		height: 70px;
+		background: #151515;
+		display: flex;
+		justify-content: space-between;
+		.leftBox {
+			display: flex;
+			.headBox-logo {
+                cursor: pointer;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				color: #e1e1e1;
+				font-size: x-large;
+				width: 200px;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.headBox-midder {
+				// min-width: 400px;
+                // background: #ffffff;
+                display: flex;
+
+				.itemtab {
+					height: 100%;
+					width: 100px;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+                    justify-content: center;
+                    border-bottom: 2px solid rgba(0,0,0,0);
+                    cursor: pointer;
+					.nametab {
+						color: #ffffff;
+                        font-size: 1em;
+                        margin-top: 2px;
+					}
+				}
+			}
+		}
+
+		.headBox-right {
+			width: 470px;
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			color: #ffffff;
+			.fot-left {
+				display: flex;
+				align-items: center;
+				.mx-1 {
+                    cursor: pointer;
+					margin-left: 5px;
+					color: #ffffff;
+				}
+			}
+		}
+	}
+	.mainBox {
+		width: 100vw;
+		transition: .2s cubic-bezier(.4, 0, .2, 1);
+		padding-top: 70px;
+		padding-bottom: 70px;
+        // background: rgba(255, 255, 255, .2);
+	}
+}
+
+.active{
+    border-bottom: 2px solid #f55834 !important;
+
+}
+.activeSize{
+    color: #f55834 !important;
+
+}
