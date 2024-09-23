@@ -187,7 +187,7 @@ onUnmounted(() => {
     <div ref="chartDom" style="width: 600px; height: 400px;"></div>
     <vxe-grid v-bind="gridOptions"></vxe-grid>
   </div>
-    </FitScreen>
+</FitScreen>
 </template>
 
 <style scoped>
