@@ -227,8 +227,16 @@ onMounted(async () => {
       </el-collapse-item>
       <el-collapse-item title="--电气数据" name="3" :icon="ArrowRightBold">
         <div class="contEne">
-            <div class="threeleft"></div>
-            <div class="threeright"></div>
+            <div class="threeleft">
+                <div class="threeleft-top">
+                    <div>电源数据</div>
+                    <div style="display:flex"><el-icon :size="20" color="#636363"><CaretBottom /></el-icon></div>
+                </div>
+                <div class="threeleft-bom"></div>
+            </div>
+            <div class="threeright">
+                <div class="rightMaxItem"></div>
+            </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -328,5 +336,28 @@ button:focus-visible {
     left: 50%;
     transform: translate(-50%,-45%)
 
+}
+.threeleft{
+    width: 500px;
+    height: 700px;
+    margin-left: 10px;
+    box-sizing: border-box;
+}
+.threeleft-top{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #151515;
+
+}
+.threeright{
+    border: 1px solid #ffffff;
+    width: 500px;
+    margin-left: 10px;
+}
+.rightMaxItem{
+    
 }
 </style>
