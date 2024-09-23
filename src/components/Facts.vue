@@ -35,7 +35,7 @@ const healthEchat = () => {
         min: 0, //最小刻度
         max: 100, //最大刻度
         splitNumber: 10, //刻度数量
-        startAngle: 225,    
+        startAngle: 225,
         endAngle: -45,
         axisLine: {
           show: true,
@@ -79,7 +79,7 @@ const healthEchat = () => {
           show: true,
           splitNumber: 9,
           lineStyle: {
-            color: '#fff',
+            color: "#fff",
             width: 0.3
           },
           length: -15
@@ -90,7 +90,7 @@ const healthEchat = () => {
           lineStyle: {
             color: "#fff",
             width: 0.5,
-            height:0.5
+            height: 0.5
           }
         }, //分隔线样式
         detail: {
@@ -178,25 +178,31 @@ const healthEchat = () => {
   chartInstance.setOption(option);
 };
 interface healthType {
-    name:string,
-    value:number
+  name: string;
+  value: number;
 }
-const healthData = reactive<healthType[]>([{
-    name:"温度健康度",
-    value:100
-},{
-    name:"温度健康度",
-    value:100
-},{
-    name:"储能电机健康度",
-    value:90
-},{
-    name:"分闸线圈健康度",
-    value:97
-},{
-    name:"合闸线圈健康度",
-    value:98
-}])
+const healthData = reactive<healthType[]>([
+  {
+    name: "温度健康度",
+    value: 100
+  },
+  {
+    name: "温度健康度",
+    value: 100
+  },
+  {
+    name: "储能电机健康度",
+    value: 90
+  },
+  {
+    name: "分闸线圈健康度",
+    value: 97
+  },
+  {
+    name: "合闸线圈健康度",
+    value: 98
+  }
+]);
 onMounted(async () => {
   healthEchat();
 });
@@ -214,29 +220,41 @@ onMounted(async () => {
       </el-collapse-item>
       <el-collapse-item title="--健康度" name="2" :icon="ArrowRightBold">
         <div class="contEne">
-          <div class="twoleft">   
-            <div ref="chartDom" style="width: 350px; height: 310px;" class="chartDomcL"></div>   
+          <div class="twoleft">
+            <div ref="chartDom" style="width: 350px; height: 310px;" class="chartDomcL"></div>
           </div>
           <div class="tworight">
-              <div class="tworight-item" v-for="(item,index) in healthData" :key="index">
-                  <div>{{ item.name }}</div>
-                  <div>{{ item.value }}</div>
-              </div>
+            <div class="tworight-item" v-for="(item,index) in healthData" :key="index">
+              <div>{{ item.name }}</div>
+              <div>{{ item.value }}</div>
+            </div>
           </div>
         </div>
       </el-collapse-item>
       <el-collapse-item title="--电气数据" name="3" :icon="ArrowRightBold">
         <div class="contEne">
-            <div class="threeleft">
-                <div class="threeleft-top">
-                    <div>电源数据</div>
-                    <div style="display:flex"><el-icon :size="20" color="#636363"><CaretBottom /></el-icon></div>
-                </div>
-                <div class="threeleft-bom"></div>
+          <div class="threeleft">
+            <div class="threeleft-top">
+              <div>电源数据</div>
+              <div style="display:flex">
+                <el-icon :size="20" color="#636363">
+                  <CaretBottom />
+                </el-icon>
+              </div>
             </div>
-            <div class="threeright">
-                <div class="rightMaxItem"></div>
+            <div class="threeleft-bom">
+
             </div>
+          </div>
+          <div class="threeright">
+            <div class="rightMaxItem" v-for="w in 6">
+              <div class="minitem rigleft">电流谐波总含量 （%）</div>
+              <div class="numRight rigleft" v-for="i in 3">
+                <div class="numRight-top">la</div>
+                <div class="numRight-bom">4.4</div>
+              </div>
+            </div>
+          </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -309,55 +327,93 @@ button:focus-visible {
   position: relative;
 }
 .tworight {
-    margin-left: 10px;
-    display: flex;
-    flex-wrap: wrap;
+  margin-left: 10px;
+  display: flex;
+  flex-wrap: wrap;
 }
-.tworight-item{
-    width: 122px;
-    height: 98px;
-    background: #151515;
-    margin-right: 10px;
+.tworight-item {
+  width: 122px;
+  height: 98px;
+  background: #151515;
+  margin-right: 10px;
 }
-.tworight-item > div{
-    text-align: center;
+.tworight-item > div {
+  text-align: center;
 }
-.tworight-item > div:nth-child(1){
-    font-size: 16px;
+.tworight-item > div:nth-child(1) {
+  font-size: 16px;
 }
-.tworight-item > div:nth-child(2){
-    font-size: 28px;
-    color: #888888;
-    font-weight: bold;
+.tworight-item > div:nth-child(2) {
+  font-size: 28px;
+  color: #888888;
+  font-weight: bold;
 }
-.chartDomcL{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-45%)
-
+.chartDomcL {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%);
 }
-.threeleft{
-    width: 500px;
-    height: 700px;
-    margin-left: 10px;
-    box-sizing: border-box;
+.threeleft {
+  width: 500px;
+  height: 700px;
+  margin-left: 10px;
+  box-sizing: border-box;
 }
-.threeleft-top{
-    width: 100%;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #151515;
-
+.threeleft-top {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #151515;
 }
-.threeright{
-    border: 1px solid #ffffff;
-    width: 500px;
-    margin-left: 10px;
+.threeright {
+  /* border: 1px solid #ffffff; */
+  width: 500px;
+  margin-left: 10px;
 }
-.rightMaxItem{
-    
+.rightMaxItem {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  margin-bottom: 4px;
+}
+.rigleft {
+  margin-right: 2px;
+}
+.minitem {
+  background: #151515;
+  width: 130px;
+  height: 100%;
+  color: #cddc39;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120%;
+  font-weight: 400;
+}
+.numRight {
+  width:121px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.numRight-top {
+  background: #151515;
+  width: 100%;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+}
+.numRight-bom {
+  background: #151515;
+  width: 100%;
+  height: 56px;
+  line-height: 56px;
+  text-align: center;
+  color: #888888;
+  font-size: 1.6em;
 }
 </style>
