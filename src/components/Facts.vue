@@ -203,6 +203,121 @@ const healthData = reactive<healthType[]>([
     value: 98
   }
 ]);
+interface DataItem {
+  name: string;
+  value: any;
+}
+
+interface ElectricalData {
+  title: string;
+  data: DataItem[];
+}
+
+const electricalData = reactive<ElectricalData[]>([
+  {
+    title: "电流（A）",
+    data: [
+      {
+        name: "la",
+        value: 4.4
+      },
+      {
+        name: "lb",
+        value: 5.3
+      },
+      {
+        name: "lc",
+        value: 5.1
+      }
+    ]
+  },
+  {
+    title: "电压（V）",
+    data: [
+      {
+        name: "Uab",
+        value: 10339.0
+      },
+      {
+        name: "Ubc",
+        value: 10355.1
+      },
+      {
+        name: "Uca",
+        value: 10337.7
+      }
+    ]
+  },
+  {
+    title: "功率",
+    data: [
+      {
+        name: "P",
+        value: "83.5kW"
+      },
+      {
+        name: "Q",
+        value:  "22.7kvar"
+      },
+      {
+        name: "S",
+        value: "89.9kVA"
+      }
+    ]
+  },
+  {
+    title: "功率因数",
+    data: [
+      {
+        name: "A",
+        value: 0.96
+      },
+      {
+        name: "B",
+        value: 0.96
+      },
+      {
+        name: "C",
+        value: 0.96
+      }
+    ]
+  },
+  {
+    title: "电流谐波总含量 （%）",
+    data: [
+      {
+        name: "A",
+        value: 7.5
+      },
+      {
+        name: "B",
+        value: 7.4
+      },
+      {
+        name: "C",
+        value: 7.5
+      }
+    ]
+  },
+  {
+    title: "电压谐波总含量（%）",
+    data: [
+      {
+        name: "A",
+        value: 1.5
+      },
+      {
+        name: "B",
+        value: 1.5
+      },
+      {
+        name: "C",
+        value: 1.5
+      }
+    ]
+  }
+]);
+
 onMounted(async () => {
   healthEchat();
 });
@@ -235,23 +350,21 @@ onMounted(async () => {
         <div class="contEne">
           <div class="threeleft">
             <div class="threeleft-top">
-              <div>电源数据</div>
+              <div style="color:#585858">电源数据</div>
               <div style="display:flex">
                 <el-icon :size="20" color="#636363">
                   <CaretBottom />
                 </el-icon>
               </div>
             </div>
-            <div class="threeleft-bom">
-
-            </div>
+            <div class="threeleft-bom"></div>
           </div>
           <div class="threeright">
-            <div class="rightMaxItem" v-for="w in 6">
-              <div class="minitem rigleft">电流谐波总含量 （%）</div>
-              <div class="numRight rigleft" v-for="i in 3">
-                <div class="numRight-top">la</div>
-                <div class="numRight-bom">4.4</div>
+            <div class="rightMaxItem" v-for="(ele,index) in electricalData" :key="index">
+              <div class="minitem rigleft">{{ ele.title }}</div>
+              <div class="numRight rigleft" v-for="(e,i) in ele.data" :key="i">
+                <div class="numRight-top">{{ e.name }}</div>
+                <div class="numRight-bom">{{ e.value }}</div>
               </div>
             </div>
           </div>
@@ -301,14 +414,15 @@ button:focus-visible {
   flex-wrap: wrap;
 }
 .one-item {
-  width: 500px;
+  width: 740px;
   display: flex;
   justify-content: space-between;
   margin-left: 10px;
   margin-bottom: 10px;
+  /* border: 1px solid #ffffff; */
 }
 .EneItem {
-  width: 245px;
+  width: 365px;
   height: 80px;
   line-height: 80px;
   background: #151515;
@@ -320,7 +434,7 @@ button:focus-visible {
   font-size: 1.6em;
 }
 .twoleft {
-  width: 245px;
+  width: 365px;
   height: 200px;
   background: #151515;
   margin-left: 10px;
@@ -332,10 +446,11 @@ button:focus-visible {
   flex-wrap: wrap;
 }
 .tworight-item {
-  width: 122px;
+  width: 216px;
   height: 98px;
   background: #151515;
   margin-right: 10px;
+  padding-top: 15px;
 }
 .tworight-item > div {
   text-align: center;
@@ -355,27 +470,27 @@ button:focus-visible {
   transform: translate(-50%, -45%);
 }
 .threeleft {
-  width: 500px;
-  height: 700px;
+  width: 735px;
+  /* height: 700px; */
   margin-left: 10px;
   box-sizing: border-box;
 }
 .threeleft-top {
   width: 100%;
-  height: 80px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #151515;
+  font-size: 2em;
 }
 .threeright {
-  /* border: 1px solid #ffffff; */
-  width: 500px;
+  width: 750px;
   margin-left: 10px;
 }
 .rightMaxItem {
   width: 100%;
-  height: 80px;
+  height: 100px;
   display: flex;
   margin-bottom: 4px;
 }
@@ -384,7 +499,7 @@ button:focus-visible {
 }
 .minitem {
   background: #151515;
-  width: 130px;
+  width: 180px;
   height: 100%;
   color: #cddc39;
   display: flex;
@@ -392,9 +507,11 @@ button:focus-visible {
   justify-content: center;
   font-size: 120%;
   font-weight: 400;
+  padding: 3px;
+  box-sizing: border-box;
 }
 .numRight {
-  width:121px;
+  width: 186px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -403,8 +520,8 @@ button:focus-visible {
 .numRight-top {
   background: #151515;
   width: 100%;
-  height: 22px;
-  line-height: 22px;
+  height: 39px;
+  line-height: 39px;
   text-align: center;
 }
 .numRight-bom {
@@ -415,5 +532,11 @@ button:focus-visible {
   text-align: center;
   color: #888888;
   font-size: 1.6em;
+}
+.threeleft-bom {
+  width: 100%;
+  margin-top: 5px;
+  background: #151515;
+  height: 515px;
 }
 </style>
