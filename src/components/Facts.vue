@@ -1,9 +1,33 @@
+<script lang="ts" setup>
+import { ref, reactive } from "vue";
+const activeNames = ref(["1","2","3","4"]); //默认展开第几列
+interface cabinetType {
+  name: string;
+  value: string;
+}
+const cabinet = reactive<cabinetType[]>([
+  {
+    name: "柜体编号",
+    value: "11-1MP04"
+  },
+  {
+    name: "柜体型号",
+    value: "KYN28A-12"
+  }
+]);
+const handleChange = (val: string[]) => {
+  console.log(val);
+};
+</script>
 <template>
   <div class="demo-collapse">
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="--柜体" name="1" :icon="ArrowRightBold">
         <div class="contEne">
-          <div class="EneItem">11-1MP04</div>
+          <div class="one-item" v-for="(item,index) in cabinet" :key="index">
+            <div class="EneItem" style="fontWeight: 400">{{ item.name }}</div>
+            <div class="EneItem">{{ item.value }}</div>
+          </div>
         </div>
       </el-collapse-item>
       <el-collapse-item title="--健康度" name="2">
@@ -22,15 +46,6 @@
     </el-collapse>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from "vue";
-
-const activeNames = ref(["1"]);
-const handleChange = (val: string[]) => {
-  console.log(val);
-};
-</script>
 
 <style scoped>
 .icon-ele {
@@ -66,10 +81,22 @@ button:focus-visible {
 }
 .contEne {
   /* color: #ffffff; */
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+.one-item {
+  width: 450px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 .EneItem {
-    width: 200px;
-    height: 60px;
+  width: 220px;
+  height: 80px;
+  line-height: 80px;
   background: #151515;
   display: flex;
   flex-direction: column;
