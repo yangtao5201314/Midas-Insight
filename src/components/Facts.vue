@@ -208,7 +208,7 @@ const healthData = reactive<healthType[]>([
 // 电气数据
 interface DataItem {
   name: string;
-  value: any;
+  value: string | number
 }
 
 interface ElectricalData {

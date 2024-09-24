@@ -11,7 +11,7 @@ onMounted(async () => {
 <template>
   <div class="demo-collapse">
     <el-collapse v-model="activeNames" @change="handleChange">
-      <el-collapse-item title="--柜体" name="1" :icon="ArrowRightBold">
+      <el-collapse-item title="--电气参数" name="1" :icon="ArrowRightBold">
         <div class="contEne">
           
         </div>
@@ -61,6 +61,7 @@ button:focus-visible {
   padding: 15px;
   box-sizing: border-box;
   display: flex;
+  border: 1px solid #ffffff;
   /* flex-wrap: wrap; */
 }
 </style>
