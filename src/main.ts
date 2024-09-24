@@ -2,7 +2,7 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-11 09:37:28
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-19 13:57:13
+ * @LastEditTime: 2024-09-24 14:35:57
  * @FilePath: \vite3\src\main.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -23,8 +23,10 @@ import 'vxe-pc-ui/lib/style.css'
 // 完整导入 表格库
 import VxeUITable from 'vxe-table'
 import 'vxe-table/lib/style.css'
-
+// 全局注册FitScreen适配组件   
 import FitScreen from '@fit-screen/vue'
+// 全局引入unocss
+import 'virtual:uno.css';
   
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

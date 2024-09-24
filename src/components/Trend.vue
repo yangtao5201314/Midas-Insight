@@ -1,9 +1,21 @@
+<!--
+ * @Author: 杨涛 2749552387@qq.com
+ * @Date: 2024-09-24 11:31:46
+ * @LastEditors: 杨涛 2749552387@qq.com
+ * @LastEditTime: 2024-09-24 15:01:42
+ * @FilePath: \Midas-Insight\src\components\Trend.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
 import { ArrowRightBold } from '@element-plus/icons-vue'
 import * as echarts from "echarts";
 const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
 
+// 折叠面板按钮事件
+const handleChange = (val: string[]) => {
+  console.log(val);
+};
 
 onMounted(async () => {
 });
@@ -13,7 +25,7 @@ onMounted(async () => {
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="--电气参数" name="1" :icon="ArrowRightBold">
         <div class="contEne">
-          <div class="d-top"></div>
+          <div class="d-top flex items-center"></div>
         </div>
       </el-collapse-item>
       

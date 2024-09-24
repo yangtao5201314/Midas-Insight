@@ -6,7 +6,7 @@ const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
 // 柜体数据
 interface cabinetType {
   name: string;
-  value: string;
+  value: string;  
 }
 const cabinet = reactive<cabinetType[]>([
   {
