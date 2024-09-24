@@ -2,19 +2,20 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-19 09:48:21
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-23 14:24:33
+ * @LastEditTime: 2024-09-24 11:35:35
  * @FilePath: \vite3\src\view\login\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
 import { ref,reactive, onMounted,resolveComponent,onBeforeUnmount  } from "vue";
 import Facts from '@/components/Facts.vue'
+import Trend from '@/components/Trend.vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 
-interface menuType {
+interface menuType {    
   icon: string;
   name: string;
 }
@@ -130,7 +131,7 @@ onMounted(async () => {
            <div class="headBox-right">
                <div>{{ currentTime }}</div>
                <div class="fot-left">
-                    <el-icon :size="20" :color="userColor">
+                    <el-icon :size="20">
                         <User />
                     </el-icon>
                     <el-popconfirm title="确定要退出登录吗？" @confirm="logout">
@@ -138,7 +139,6 @@ onMounted(async () => {
                             <el-text class="mx-1">Admin</el-text>   
                         </template>
                     </el-popconfirm>
-                    
                 </div>
                <div>
                    <el-popover placement="bottom" :width="400" trigger="click">
@@ -153,8 +153,6 @@ onMounted(async () => {
                             <el-table-column width="300" property="address" label="描述" /> 
                         </el-table>
                     </el-popover>
-                   
-                   
                </div>
                <div>
                    <el-icon :size="20"><Tools /></el-icon>
@@ -168,7 +166,9 @@ onMounted(async () => {
            <div v-if="currentTab == 0">
                <Facts />
            </div>
-           <div v-if="currentTab == 1">趋势</div>
+           <div v-if="currentTab == 1">
+               <Trend />
+           </div>
            <div v-if="currentTab == 2">统计</div>
            <div v-if="currentTab == 3">设备信息</div>
            <div v-if="currentTab == 4">设备态势</div>

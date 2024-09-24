@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
+import { ArrowRightBold } from '@element-plus/icons-vue'
 import * as echarts from "echarts";
-const activeNames = ref(["1", "2", "3", "4"]); //默认展开第几列
+const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
 // 柜体数据
 interface cabinetType {
   name: string;
@@ -17,6 +18,7 @@ const cabinet = reactive<cabinetType[]>([
     value: "KYN28A-12"
   }
 ]);
+// 折叠面板按钮事件
 const handleChange = (val: string[]) => {
   console.log(val);
 };
@@ -203,6 +205,7 @@ const healthData = reactive<healthType[]>([
     value: 98
   }
 ]);
+// 电气数据
 interface DataItem {
   name: string;
   value: any;
@@ -257,7 +260,7 @@ const electricalData = reactive<ElectricalData[]>([
       },
       {
         name: "Q",
-        value:  "22.7kvar"
+        value: "22.7kvar"
       },
       {
         name: "S",
@@ -318,6 +321,141 @@ const electricalData = reactive<ElectricalData[]>([
   }
 ]);
 
+// 环境数据
+const huanjiData = reactive<DataItem[]>([
+  {
+    name: "环境温度",
+    value: "27.9℃"
+  },
+  {
+    name: "环境湿度",
+    value: "80.9%"
+  },
+  {
+    name: "放电-声波",
+    value: "1.0"
+  },
+  {
+    name: "放电-电波",
+    value: "--"
+  },
+  {
+    name: "A相进线温度",
+    value: "30.7℃"
+  },
+  {
+    name: "B相进线温度",
+    value: "31.2℃"
+  },
+  {
+    name: "C相进线温度",
+    value: "30.5℃"
+  },
+  {
+    name: "A相出线温度",
+    value: "30.6℃"
+  },
+  {
+    name: "B相出线温度",
+    value: "30.4℃"
+  },
+  {
+    name: "C相出线温度",
+    value: "27.9℃"
+  },
+  {
+    name: "烟气0.3",
+    value: "3978.0"
+  },
+  {
+    name: "烟气0.5",
+    value: "1864.0"
+  },
+  {
+    name: "烟气1",
+    value: "14.0"
+  },
+  {
+    name: "烟气2.5",
+    value: "0.0"
+  },
+  {
+    name: "烟气5",
+    value: "0.0"
+  },
+  {
+    name: "烟气10",
+    value: "0.0"
+  }
+]);
+
+// 湿场数据
+const shiChaData = reactive<DataItem[]>([
+  {
+    name: "温场1-A相进线",
+    value: "27.9℃"
+  },
+  {
+    name: "温场1-B相进线",
+    value: "80.9%"
+  },
+  {
+    name: "温场1-C相进线",
+    value: "1.0"
+  },
+  {
+    name: "温场2-A相进线",
+    value: "--"
+  },
+  {
+    name: "温场2-B相进线",
+    value: "30.7℃"
+  },
+  {
+    name: "温场2-C相进线",
+    value: "31.2℃"
+  },
+  {
+    name: "温场3-A相",
+    value: "30.5℃"
+  },
+  {
+    name: "温场3-B相",
+    value: "30.6℃"
+  },
+  {
+    name: "温场3-C相",
+    value: "27.9℃"
+  }
+]);
+// 设备在线状态
+const settType = reactive([
+  {
+    name: "insight装置",
+    isType: true // 开关
+  },
+  {
+    name: "串口服务器",
+    isType: true
+  },
+  {
+    name: "断路器室温场",
+    isType: true
+  },
+  {
+    name: "母线室温场",
+    isType: true
+  },
+  {
+    name: "电缆室温场",
+    isType: true
+  }
+]);
+// 开关按钮
+const swchChange = (e,item)=>{
+    console.log(e,item)
+}
+
 onMounted(async () => {
   healthEchat();
 });
@@ -370,11 +508,51 @@ onMounted(async () => {
           </div>
         </div>
       </el-collapse-item>
+      <el-collapse-item title="--环境数据" name="4" :icon="ArrowRightBold">
+        <div class="contEne">
+          <div class="tworight huaSty">
+            <div class="tworight-item huaWid" v-for="(item,index) in huanjiData" :key="index">
+              <div>{{ item.name }}</div>
+              <div>{{ item.value }}</div>
+            </div>
+          </div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="--湿场数据" name="5" :icon="ArrowRightBold">
+        <div class="contEne">
+          <div class="tworight huaSty">
+            <div class="tworight-item huaWid" v-for="(item,index) in shiChaData" :key="index">
+              <div>{{ item.name }}</div>
+              <div>{{ item.value }}</div>
+            </div>
+          </div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="--设备在线状态" name="6" :icon="ArrowRightBold">
+        <div class="contEne">
+          <div class="tworight huaSty">
+            <div class="tworight-item huaWid" v-for="(item,index) in settType" :key="index">
+              <div>{{ item.name }}</div>
+              <div>
+                <el-switch
+                  v-model="item.isType"
+                  @change="swchChange($event,item)"
+                  class="ml-2"
+                  style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </el-collapse-item>
     </el-collapse>
   </div>
 </template>
 
 <style scoped>
+.demo-collapse {
+  padding-right: 20px;
+}
 .icon-ele {
   margin: 0 8px 0 auto;
   color: #409eff;
@@ -411,7 +589,7 @@ button:focus-visible {
   padding: 15px;
   box-sizing: border-box;
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 }
 .one-item {
   width: 740px;
@@ -451,6 +629,7 @@ button:focus-visible {
   background: #151515;
   margin-right: 10px;
   padding-top: 15px;
+  margin-bottom: 4px;
 }
 .tworight-item > div {
   text-align: center;
@@ -523,6 +702,8 @@ button:focus-visible {
   height: 39px;
   line-height: 39px;
   text-align: center;
+  font-size: 1.2em;
+  letter-spacing: 2px;
 }
 .numRight-bom {
   background: #151515;
@@ -532,11 +713,24 @@ button:focus-visible {
   text-align: center;
   color: #888888;
   font-size: 1.6em;
+  font-weight: bold;
 }
 .threeleft-bom {
   width: 100%;
   margin-top: 5px;
   background: #151515;
   height: 515px;
+  background-image: url("@/assets/home/danxiantu.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.huaSty {
+  /* border: 1px solid #ffffff; */
+  width: 1500px;
+}
+.huaWid {
+  width: 239px;
+  margin-bottom: 10px;
 }
 </style>
