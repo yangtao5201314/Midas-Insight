@@ -1,16 +1,11 @@
-## 网站首页
-
-👉👉 [江城开朗的豌豆](https://yangtao.xyz/#/)
-
-## 开发者
-
-**江城开朗的豌豆**
-
-👉👉 [掘金](https://juejin.cn/user/3307789418773736)
-
-👉👉 [github](https://github.com/yangtao5201314)
-
-👉👉 [个人博客](https://blog.csdn.net/qq_48652579?type=lately)
+<!--
+ * @Author: 杨涛 2749552387@qq.com
+ * @Date: 2024-09-20 17:09:53
+ * @LastEditors: 杨涛 2749552387@qq.com
+ * @LastEditTime: 2024-09-24 14:15:55
+ * @FilePath: \Midas-Insight\README.md
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 
 ### 安装 yarn 并启动项目
 
