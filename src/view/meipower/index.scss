@@ -80,14 +80,13 @@ body {
 		transition: .2s cubic-bezier(.4, 0, .2, 1);
 		padding-top: 70px;
 		padding-bottom: 70px;
-		// border: 1px solid #ffffff;
+		// border: 1px solid #ffffff;  
         // background: rgba(255, 255, 255, .2);
 	}
 }
 
 .active{
     border-bottom: 2px solid #f55834 !important;
-
 }
 .activeSize{
     color: #f55834 !important;

@@ -558,6 +558,7 @@ onMounted(async () => {
   color: #409eff;
 }
  :deep(.el-collapse) {
+  border-top: 1px solid #000000;
   background-color: rgba(0, 0, 0, 0) !important;
 }
 :deep(.el-collapse)
