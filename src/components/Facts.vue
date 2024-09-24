@@ -557,29 +557,29 @@ onMounted(async () => {
   margin: 0 8px 0 auto;
   color: #409eff;
 }
-/deep/.el-collapse {
+ :deep(.el-collapse) {
   background-color: rgba(0, 0, 0, 0) !important;
 }
-/deep/.el-collapse,
+:deep(.el-collapse)
 .el-collapse-item__wrap {
   border: none;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-/deep/ .el-collapse-item__wrap {
+:deep(.el-collapse-item__wrap)  {
   border-bottom: 1px solid #000000 !important;
 }
-/deep/ .el-collapse-item__header {
+:deep(.el-collapse-item__header){
   color: #fff;
   font-weight: bold;
   font-size: 1em;
   border-bottom: 1px solid #000000;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-/deep/ .el-collapse-item__content {
+:deep(.el-collapse-item__content){
   color: #fff;
   background-color: rgba(0, 0, 0, 1) !important;
 }
-/deep/ button:focus,
+:deep(button:focus),
 button:focus-visible {
   outline: none !important; /* 移除默认的边框 */
   box-shadow: none !important; /* 移除阴影效果（如果有的话） */
