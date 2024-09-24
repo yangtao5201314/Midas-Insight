@@ -25,7 +25,7 @@ onMounted(async () => {
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="--电气参数" name="1" :icon="ArrowRightBold">
         <div class="contEne">
-          <div class="d-top flex items-center"></div>
+          <div class="d-top flex items-center justify-between"></div>
         </div>
       </el-collapse-item>
       
