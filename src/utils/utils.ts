@@ -1,37 +1,59 @@
 import * as echarts from "echarts";
 
 // 封装毫秒时间转换方法
-export const formatTimestampWithMicroseconds = (timestamp: number)=> {
-    // 提取秒和微秒部分
-    const seconds = Math.floor(timestamp);
-    const microseconds = Math.round((timestamp - seconds) * 1000);
-    const date = new Date(seconds * 1000);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const secondsFormatted = String(date.getSeconds()).padStart(2, "0");
-    return `${year}-${month}-${day} ${hours}:${minutes}:${secondsFormatted}.${String(
-      microseconds
-    ).padStart(3, "0")}`;
+export const formatTimestampWithMicroseconds = (timestamp: number) => {
+  // 提取秒和微秒部分
+  const seconds = Math.floor(timestamp);
+  const microseconds = Math.round((timestamp - seconds) * 1000);
+  const date = new Date(seconds * 1000);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const secondsFormatted = String(date.getSeconds()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}:${secondsFormatted}.${String(
+    microseconds
+  ).padStart(3, "0")}`;
+};
+
+// 转换数组
+const transformData = (data: any[][]): any[][] => {
+  // 创建一个与输入数据长度相对应的结果数组
+  const result = Array.from({ length: data[0].length - 1 }, () => []);
+
+  // 遍历每个子数组
+  for (const item of data) {
+      for (let i = 1; i < item.length; i++) {
+          result[i - 1].push(item[i]);
+      }
   }
 
+  return result;
+}
 
-  // echars折线图封装
-export const currentFun = (chartDom: { value: HTMLElement | null | undefined; },echData: any, jdata: undefined[][]) => {
+// echars折线图封装
+export const currentFun = (
+  chartDom: { value: HTMLElement | null | undefined },
+  echName: string,
+  echData: any
+) => {
+  const chatHead = echData[0]
+  const xAxisData = echData.slice(1)
+  const chatCon = echData.slice(1).map((item: any[]) => formatTimestampWithMicroseconds(item[0]))
+  console.log("传进来的数据", chatHead);
+  console.log("传进来的数据chatCon", chatCon);
+  console.log("传进来的数据xAxisData", xAxisData);
   const chartInstance = echarts.init(chartDom.value);
-  console.log("====", jdata);
-
   var charts = {
     unit: "A",
-    names:
-      jdata[1][0] == undefined ? ["la"] : ["lb", "lc"],
-    lineX: echData,
-    value: jdata,
+    names: chatHead,
+    // names:jdata[1][0] == undefined ? ["la"] : ["lb", "lc"],
+    lineX: chatCon,
+    value: transformData(xAxisData),
   };
-  // 折线的颜色
-  var color = ["rgba(23, 255, 243", "rgba(255,100,97"];
+  // 折线的颜色   
+  var color = ["rgba(67, 99, 216", "rgba(60, 180, 75", "rgba(255, 225, 25", "rgba(230, 25, 75"];
   var lineY = [];
 
   for (var i = 0; i < charts.names.length; i++) {
@@ -73,7 +95,7 @@ export const currentFun = (chartDom: { value: HTMLElement | null | undefined; },
     };
     lineY.push(data);
   }
-
+// 箭头设置
   lineY[0].markLine = {
     silent: true,
     data: [],
@@ -82,13 +104,13 @@ export const currentFun = (chartDom: { value: HTMLElement | null | undefined; },
     backgroundColor: "#151515", //背景色
     title: {
       // text: '你的图表标题',
-      subtext: '电流',
-      left: 'center', // 可以设置为 'left', 'right' 或 'center'
-      top: 'top', // 也可以设置为 'bottom'
+      subtext: echName,
+      left: "center", // 可以设置为 'left', 'right' 或 'center'
+      top: "top", // 也可以设置为 'bottom'
       subtextStyle: {
-        color: '#ffffff', // 设置副标题颜色
-        fontSize: 14 // 可选：设置字体大小
-      }
+        color: "#ffffff", // 设置副标题颜色
+        fontSize: 14, // 可选：设置字体大小
+      },
     },
     tooltip: {
       trigger: "axis",
@@ -114,9 +136,9 @@ export const currentFun = (chartDom: { value: HTMLElement | null | undefined; },
       feature: {
         myFullScreen: {
           show: true,
-          title: '全屏',
-          icon: 'path://M8 0h8v8H8V0zm0 16h8v-8H8v8zM0 8h8v8H0V8zm16 0h8v8h-8V8z',
-          onclick: function() {
+          title: "全屏",
+          icon: "path://M8 0h8v8H8V0zm0 16h8v-8H8v8zM0 8h8v8H0V8zm16 0h8v8h-8V8z",
+          onclick: function () {
             const chartDom = chartInstance.getDom();
             if (!document.fullscreenElement) {
               chartDom.requestFullscreen();
@@ -124,14 +146,7 @@ export const currentFun = (chartDom: { value: HTMLElement | null | undefined; },
             } else {
               document.exitFullscreen();
             }
-            // 实现全屏逻辑
-            // const chartDom = chartInstance.getDom();
-            // if (!document.fullscreenElement) {
-            //   chartDom.requestFullscreen();
-            // } else {
-            //   document.exitFullscreen();
-            // }
-          }
+          },
         },
         dataZoom: {
           // 缩放工具
@@ -147,7 +162,7 @@ export const currentFun = (chartDom: { value: HTMLElement | null | undefined; },
       data: charts.names,
       textStyle: {
         fontSize: 12,
-        color: "rgb(0,253,255,0.6)", //legend 的颜色
+        color: "#ffffff", //legend 的颜色
       },
       bottom: 10,
       right: "50%",
@@ -199,7 +214,7 @@ export const currentFun = (chartDom: { value: HTMLElement | null | undefined; },
     },
     series: lineY,
   };
-  document.addEventListener('fullscreenchange', () => {
+  document.addEventListener("fullscreenchange", () => {
     chartInstance.resize(); // 监听全屏变化
   });
   chartInstance.setOption(option);

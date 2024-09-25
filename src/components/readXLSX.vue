@@ -2,7 +2,7 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-25 10:55:50
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 11:15:05
+ * @LastEditTime: 2024-09-25 14:14:09
  * @FilePath: \Midas-Insight\src\components\readXLSX.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -44,6 +44,7 @@ const handleFileUpload = (event) => {
 
         // 将数据转换为 JSON 格式
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // header: 1 表示第一行作为头部
+        console.log(jsonData[0])
         headers.value = jsonData[0]; // 第一行作为表头
         data.value = jsonData.slice(1); // 后面的数据
         console.log(jsonData); // 打印 JSON 格式的数据
