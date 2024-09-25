@@ -2,7 +2,7 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-24 11:31:46
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 16:44:12
+ * @LastEditTime: 2024-09-25 17:17:26
  * @FilePath: \Midas-Insight\src\components\Trend.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -116,6 +116,91 @@ const CxjBom = reactive({
   name: "C相进线",
   unit: '℃'
 });
+// A相出线数据
+const AxcDom = ref(null);
+const AxcBom = reactive({
+  name: "A相出线",
+  unit: '℃'
+});
+// B相出线数据
+const BxcDom = ref(null);
+const BxcBom = reactive({
+  name: "B相出线",
+  unit: '℃'
+});
+// C相出线数据
+const CxcDom = ref(null);
+const CxcBom = reactive({
+  name: "C相出线",
+  unit: '℃'
+});
+
+// 温场温度
+// 日期范围选择
+const svalueStart = ref(getLastWeekTime())   //开始时间
+const svalueEnd = ref(getCurrentTime()) //结束时间
+// 开始时间选定时间事件
+const sdataChangeStart = (data: any) => {
+  console.log("开始时间", data)
+}
+// 结束时间选定时间事件
+const sdataChangeEnd = (data: any) => {
+  console.log("结束时间", data)
+}
+// 温场1-A相进线数据
+const shichangDom = ref(null);
+const shichangBom = reactive({
+  name: "温场1-A相进线",
+  unit: '℃'
+});
+// 温场1-B相进线数据
+const sc1Dom = ref(null);
+const sc1Bom = reactive({
+  name: "温场1-B相进线",
+  unit: '℃'
+});
+// 温场1-C相进线数据
+const sccDom = ref(null);
+const sccBom = reactive({
+  name: "温场1-C相进线",
+  unit: '℃'
+});
+// 温场2-A相进线数据
+const sc2aDom = ref(null);
+const sc2aBom = reactive({
+  name: "温场2-A相进线",
+  unit: '℃'
+});
+// 温场2-B相进线数据
+const sc2bDom = ref(null);
+const sc2bBom = reactive({
+  name: "温场2-B相进线",
+  unit: '℃'
+});
+// 温场2-C相进线数据
+const sc2cDom = ref(null);
+const sc2cBom = reactive({
+  name: "温场2-C相进线",
+  unit: '℃'
+});
+// 温场3-A相进线数据
+const sc3aDom = ref(null);
+const sc3aBom = reactive({
+  name: "温场3-A相进线",
+  unit: '℃'
+});
+// 温场3-B相进线数据
+const sc3bDom = ref(null);
+const sc3bBom = reactive({
+  name: "温场3-B相进线",
+  unit: '℃'
+});
+// 温场2-C相进线数据
+const sc3cDom = ref(null);
+const sc3cBom = reactive({
+  name: "温场3-C相进线",
+  unit: '℃'
+});
 
 onMounted(async () => {
   await nextTick()
@@ -128,6 +213,18 @@ onMounted(async () => {
   await currentFun(AxjDom,AxjBom,dainLiuData)  //A相进线数据
   await currentFun(BxjDom,BxjBom,dainLiuData)  //B相进线数据
   await currentFun(CxjDom,CxjBom,dainLiuData)  //C相进线数据
+  await currentFun(AxcDom,AxcBom,dainLiuData)  //A相出线数据
+  await currentFun(BxcDom,BxcBom,dainLiuData)  //B相出线数据
+  await currentFun(CxcDom,CxcBom,dainLiuData)  //C相出线数据
+  await currentFun(shichangDom,shichangBom,dainLiuData)  //温场1-A相进线数据
+  await currentFun(sc1Dom,sc1Bom,dainLiuData)  //温场1-B相进线数据
+  await currentFun(sccDom,sccBom,dainLiuData)  //温场1-C相进线数据
+  await currentFun(sc2aDom,sc2aBom,dainLiuData)  //温场2-A相进线数据
+  await currentFun(sc2bDom,sc2bBom,dainLiuData)  //温场2-B相进线数据
+  await currentFun(sc2cDom,sc2cBom,dainLiuData)  //温场2-C相进线数据
+  await currentFun(sc3aDom,sc3aBom,dainLiuData)  //温场3-A相进线数据
+  await currentFun(sc3bDom,sc3bBom,dainLiuData)  //温场3-B相进线数据
+  await currentFun(sc3cDom,sc3cBom,dainLiuData)  //温场3-C相进线数据
 });
 </script>
 <template>
@@ -230,15 +327,81 @@ onMounted(async () => {
         </div>
         <!-- A相出线 -->
         <div class="pa-[15px] box-border">
-          <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
+          <div ref="AxcDom" class="w-[1520px] h-[420px]"></div>
         </div>
         <!-- B相出线 -->
         <div class="pa-[15px] box-border">
-          <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
+          <div ref="BxcDom" class="w-[1520px] h-[420px]"></div>
         </div>
         <!-- C相出线 -->
         <div class="pa-[15px] box-border">
-          <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
+          <div ref="CxcDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+      </el-collapse-item>
+      <el-collapse-item title="--温场温度" name="3" :icon="ArrowRightBold">
+        <div class="pa-[15px] box-border flex">
+          <div class="bg-#151515 w-[750px] h-[120px] items-center">
+            <div
+              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
+              开始时间</div>
+            <div>
+              <div class="demo-date-picker">
+                <div class="block">
+                  <el-date-picker v-model="svalueStart" type="date" placeholder="请选择开始时间" :default-value="new Date()"
+                    @change="sdataChangeStart" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ml-[20px] bg-#151515 w-[750px] h-[120px]">
+            <div
+              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
+              结束时间</div>
+            <div>
+              <div class="demo-date-picker">
+                <div class="block">
+                  <el-date-picker v-model="svalueEnd" type="date" placeholder="请选择开始时间" :default-value="new Date()"
+                    @change="sdataChangeEnd" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 温场1-A相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="shichangDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场1-B相进线-->
+        <div class="pa-[15px] box-border">
+          <div ref="sc1Dom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场1-C相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="sccDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场2-A相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="sc2aDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场2-B相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="sc2bDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场2-C相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="sc2cDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场3-A相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="sc3aDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场3-B相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="sc3bDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 温场3-C相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="sc3cDom" class="w-[1520px] h-[420px]"></div>
         </div>
       </el-collapse-item>
     </el-collapse>
