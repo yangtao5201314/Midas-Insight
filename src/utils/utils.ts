@@ -21,7 +21,6 @@ export const formatTimestampWithMicroseconds = (timestamp: number) => {
 const transformData = (data: any[][]): any[][] => {
   // 创建一个与输入数据长度相对应的结果数组
   const result = Array.from({ length: data[0].length - 1 }, () => []);
-
   // 遍历每个子数组
   for (const item of data) {
       for (let i = 1; i < item.length; i++) {
@@ -32,10 +31,15 @@ const transformData = (data: any[][]): any[][] => {
   return result;
 }
 
+interface chartBomType {
+  name: string;
+  unit: string;
+}
+
 // echars折线图封装
 export const currentFun = (
   chartDom: { value: HTMLElement | null | undefined },
-  echName: string,
+  chartObj: chartBomType,
   echData: any
 ) => {
   const chatHead = echData[0]
@@ -46,9 +50,8 @@ export const currentFun = (
   console.log("传进来的数据xAxisData", xAxisData);
   const chartInstance = echarts.init(chartDom.value);
   var charts = {
-    unit: "A",
+    unit: chartObj.unit,
     names: chatHead,
-    // names:jdata[1][0] == undefined ? ["la"] : ["lb", "lc"],
     lineX: chatCon,
     value: transformData(xAxisData),
   };
@@ -104,7 +107,7 @@ export const currentFun = (
     backgroundColor: "#151515", //背景色
     title: {
       // text: '你的图表标题',
-      subtext: echName,
+      subtext: chartObj.name,
       left: "center", // 可以设置为 'left', 'right' 或 'center'
       top: "top", // 也可以设置为 'bottom'
       subtextStyle: {
@@ -139,9 +142,9 @@ export const currentFun = (
           title: "全屏",
           icon: "path://M8 0h8v8H8V0zm0 16h8v-8H8v8zM0 8h8v8H0V8zm16 0h8v8h-8V8z",
           onclick: function () {
-            const chartDom = chartInstance.getDom();
+            const chartDom1 = chartInstance.getDom();
             if (!document.fullscreenElement) {
-              chartDom.requestFullscreen();
+              chartDom1.requestFullscreen();
               chartInstance.resize(); // 进入全屏时调整大小
             } else {
               document.exitFullscreen();

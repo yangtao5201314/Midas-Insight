@@ -2,17 +2,15 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-24 11:31:46
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 15:23:56
+ * @LastEditTime: 2024-09-25 16:16:45
  * @FilePath: \Midas-Insight\src\components\Trend.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
 import { ArrowRightBold } from '@element-plus/icons-vue'
-import { dainLiuData, dainLiuDataArrayData } from "@/utils/echars1.ts"
-import { formatTimestampWithMicroseconds,currentFun } from "@/utils/utils.ts"
-
-import * as echarts from "echarts";
+import { dainLiuData } from "@/utils/echars1.ts"
+import { currentFun } from "@/utils/utils.ts"
 const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
 // 折叠面板按钮事件
 const handleChange = (val: string[]) => {
@@ -50,12 +48,43 @@ const dataChangeStart = (data: any) => {
 const dataChangeEnd = (data: any) => {
   console.log("结束时间", data)
 }
-
-const chartDom = ref(null);// 电流数据
-const dianyaDom = ref(null);// 电压数据
+// 电流数据
+const chartDom = ref(null);
+const chartBom = reactive({
+  name: "电流",
+  unit: 'A'
+});
+// 电压数据
+const dianyaDom = ref(null);
+const dianyachart = reactive({
+  name: "电压",
+  unit: 'KV'
+});
+// 有功功率
+const youGongDom = ref(null);
+const youGongchart = reactive({
+  name: "有功功率",
+  unit: 'KW'
+});
+// 无功功率
+const wuGongDom = ref(null);
+const wuGongchart = reactive({
+  name: "无功功率",
+  unit: 'kvar'
+});
+// 视在功率
+const shiZaiDom = ref(null);
+const shiZaichart = reactive({
+  name: "视在功率",
+  unit: 'kVA'
+});
 onMounted(async () => {
-  currentFun(chartDom,"电流",dainLiuData)  //电流数据
-  currentFun(dianyaDom,"电压",dainLiuData)  //电压数据
+  await nextTick()
+  await currentFun(chartDom, chartBom, dainLiuData)  //电流数据
+  await currentFun(dianyaDom,dianyachart,dainLiuData)  //电压数据
+  await currentFun(youGongDom,youGongchart,dainLiuData)  //有功率数据
+  await currentFun(wuGongDom,wuGongchart,dainLiuData)  //无功率数据
+  await currentFun(shiZaiDom,shiZaichart,dainLiuData)  //视在功率
 });
 </script>
 <template>
@@ -90,11 +119,25 @@ onMounted(async () => {
             </div>
           </div>
         </div>
+        <!-- 电流 -->
         <div class="pa-[15px] box-border">
           <div ref="chartDom" class="w-[1520px] h-[420px]"></div>
         </div>
+        <!-- 电压 -->
         <div class="pa-[15px] box-border">
           <div ref="dianyaDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 有功功率 -->
+        <div class="pa-[15px] box-border">
+          <div ref="youGongDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 无功功率 -->
+        <div class="pa-[15px] box-border">
+          <div ref="wuGongDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- 视在功率 -->
+        <div class="pa-[15px] box-border">
+          <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
         </div>
       </el-collapse-item>
 
