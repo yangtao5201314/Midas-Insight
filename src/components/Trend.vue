@@ -2,14 +2,14 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-24 11:31:46
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 10:49:30
+ * @LastEditTime: 2024-09-25 11:51:38
  * @FilePath: \Midas-Insight\src\components\Trend.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
 import { ArrowRightBold } from '@element-plus/icons-vue'
-import { dainLiuData,dainLiuDataArrayData } from "@/utils/echars1.ts"
+import { dainLiuData, dainLiuDataArrayData } from "@/utils/echars1.ts"
 import { formatTimestampWithMicroseconds } from "@/utils/utils.ts"
 
 import * as echarts from "echarts";
@@ -111,25 +111,35 @@ const currentFun = (echData: any, jdata: undefined[][]) => {
   lineY[0].markLine = {
     silent: true,
     data: [
-      {
-        yAxis: -1,
-      },
-      {
-        yAxis: 2,
-      },
-      {
-        yAxis: 3,
-      },
-      {
-        yAxis: 4,
-      },
-      {
-        yAxis: 5,
-      },
+      // {
+      //   yAxis: -1,
+      // },
+      // {
+      //   yAxis: 2,
+      // },
+      // {
+      //   yAxis: 3,
+      // },
+      // {
+      //   yAxis: 4,
+      // },
+      // {
+      //   yAxis: 5,
+      // },
     ],
   };
   const option = {
-    backgroundColor: "rgba(0,0,0,1)", //背景色
+    backgroundColor: "#151515", //背景色
+    title: {
+      // text: '你的图表标题',
+      subtext: '电流',
+      left: 'center', // 可以设置为 'left', 'right' 或 'center'
+      top: 'top', // 也可以设置为 'bottom'
+      subtextStyle: {
+        color: '#ffffff', // 设置副标题颜色
+        fontSize: 14 // 可选：设置字体大小
+      }
+    },
     tooltip: {
       trigger: "axis",
     },
@@ -138,15 +148,19 @@ const currentFun = (echData: any, jdata: undefined[][]) => {
         type: "slider", // 滑块型缩放
         start: 0, // 起始百分比
         end: 100, // 结束百分比
+        show: false, // 也可以隐藏滑动条
       },
       {
         type: "inside", // 内置型缩放
         start: 0,
         end: 100,
+        show: false, // 也可以隐藏滑动条
       },
     ],
     toolbox: {
       show: true,
+      right: "2%",
+      top: "2%",
       feature: {
         dataZoom: {
           // 缩放工具
@@ -164,12 +178,13 @@ const currentFun = (echData: any, jdata: undefined[][]) => {
         fontSize: 12,
         color: "rgb(0,253,255,0.6)", //legend 的颜色
       },
-      right: "4%",
+      bottom: 10,
+      right: "50%",
     },
     grid: {
       top: "14%",
-      left: "4%",
-      right: "4%",
+      left: "3%",
+      right: "1%",
       bottom: "12%",
       containLabel: true,
     },
@@ -180,7 +195,8 @@ const currentFun = (echData: any, jdata: undefined[][]) => {
       axisLabel: {
         // x轴的数字颜色
         textStyle: {
-          color: "rgb(0,253,255,0.6)",
+          fontSize: 12,
+          color: "#ffffff",
         },
         formatter: function (params) {
           return params.split(" ")[0] + "\n" + params.split(" ")[1];
@@ -194,7 +210,7 @@ const currentFun = (echData: any, jdata: undefined[][]) => {
         formatter: "{value}",
         //   数字颜色
         textStyle: {
-          color: "rgb(0,253,255,0.6)",
+          color: "#ffffff",
         },
       },
       // 标线的颜色
@@ -206,19 +222,19 @@ const currentFun = (echData: any, jdata: undefined[][]) => {
       // 单位的颜色
       axisLine: {
         lineStyle: {
-          color: "rgb(0,253,255,0.6)",
+          color: "#ffffff",
         },
       },
     },
-    series: lineY,  
+    series: lineY,
   };
 
   chartInstance.setOption(option);
 };
 
 onMounted(async () => {
-  const newData = dainLiuData.map((item: any[])=> formatTimestampWithMicroseconds(item[0]))
-  currentFun(newData,dainLiuDataArrayData)
+  const newData = dainLiuData.map((item: any[]) => formatTimestampWithMicroseconds(item[0]))
+  currentFun(newData, dainLiuDataArrayData)
 });
 </script>
 <template>
@@ -254,7 +270,7 @@ onMounted(async () => {
           </div>
         </div>
         <div class="pa-[15px] box-border">
-          <div ref="chartDom" class="w-[1500px] h-[420px]"></div>
+          <div ref="chartDom" class="w-[1520px] h-[420px]"></div>
         </div>
       </el-collapse-item>
 
