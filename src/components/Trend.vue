@@ -2,7 +2,7 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-24 11:31:46
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 11:51:38
+ * @LastEditTime: 2024-09-25 13:43:33
  * @FilePath: \Midas-Insight\src\components\Trend.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,7 +10,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { ArrowRightBold } from '@element-plus/icons-vue'
 import { dainLiuData, dainLiuDataArrayData } from "@/utils/echars1.ts"
-import { formatTimestampWithMicroseconds } from "@/utils/utils.ts"
+import { formatTimestampWithMicroseconds,currentFun } from "@/utils/utils.ts"
 
 import * as echarts from "echarts";
 const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
@@ -50,191 +50,11 @@ const dataChangeStart = (data: any) => {
 const dataChangeEnd = (data: any) => {
   console.log("结束时间", data)
 }
-// 电流数据
-const chartDom = ref(null);
-let chartInstance = null;
-const currentFun = (echData: any, jdata: undefined[][]) => {
-  chartInstance = echarts.init(chartDom.value);
-  console.log("====", jdata);
 
-  var charts = {
-    unit: "A",
-    names:
-      jdata[1][0] == undefined ? ["储能数据"] : ["储能数据", "储能数据2"],
-    lineX: echData,
-    value: jdata,
-  };
-  // 折线的颜色
-  var color = ["rgba(23, 255, 243", "rgba(255,100,97"];
-  var lineY = [];
-
-  for (var i = 0; i < charts.names.length; i++) {
-    var x = i;
-    if (x > color.length - 1) {
-      x = color.length - 1;
-    }
-    var data = {
-      name: charts.names[i],
-      type: "line",
-      color: color[x] + ")",
-      smooth: true,
-      areaStyle: {
-        normal: {
-          color: new echarts.graphic.LinearGradient(
-            0,
-            0,
-            0,
-            1,
-            [
-              {
-                offset: 0,
-                color: color[x] + ", 0.3)",
-              },
-              {
-                offset: 0.8,
-                color: color[x] + ", 0)",
-              },
-            ],
-            false
-          ),
-          shadowColor: "rgba(0, 0, 0, 0.1)",
-          shadowBlur: 10,
-        },
-      },
-      symbol: "circle",
-      symbolSize: 5,
-      data: charts.value[i],
-    };
-    lineY.push(data);
-  }
-
-  lineY[0].markLine = {
-    silent: true,
-    data: [
-      // {
-      //   yAxis: -1,
-      // },
-      // {
-      //   yAxis: 2,
-      // },
-      // {
-      //   yAxis: 3,
-      // },
-      // {
-      //   yAxis: 4,
-      // },
-      // {
-      //   yAxis: 5,
-      // },
-    ],
-  };
-  const option = {
-    backgroundColor: "#151515", //背景色
-    title: {
-      // text: '你的图表标题',
-      subtext: '电流',
-      left: 'center', // 可以设置为 'left', 'right' 或 'center'
-      top: 'top', // 也可以设置为 'bottom'
-      subtextStyle: {
-        color: '#ffffff', // 设置副标题颜色
-        fontSize: 14 // 可选：设置字体大小
-      }
-    },
-    tooltip: {
-      trigger: "axis",
-    },
-    dataZoom: [
-      {
-        type: "slider", // 滑块型缩放
-        start: 0, // 起始百分比
-        end: 100, // 结束百分比
-        show: false, // 也可以隐藏滑动条
-      },
-      {
-        type: "inside", // 内置型缩放
-        start: 0,
-        end: 100,
-        show: false, // 也可以隐藏滑动条
-      },
-    ],
-    toolbox: {
-      show: true,
-      right: "2%",
-      top: "2%",
-      feature: {
-        dataZoom: {
-          // 缩放工具
-          show: true,
-        },
-        restore: {
-          // 恢复默认视图
-          show: true,
-        },
-      },
-    },
-    legend: {
-      data: charts.names,
-      textStyle: {
-        fontSize: 12,
-        color: "rgb(0,253,255,0.6)", //legend 的颜色
-      },
-      bottom: 10,
-      right: "50%",
-    },
-    grid: {
-      top: "14%",
-      left: "3%",
-      right: "1%",
-      bottom: "12%",
-      containLabel: true,
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: charts.lineX,
-      axisLabel: {
-        // x轴的数字颜色
-        textStyle: {
-          fontSize: 12,
-          color: "#ffffff",
-        },
-        formatter: function (params) {
-          return params.split(" ")[0] + "\n" + params.split(" ")[1];
-        },
-      },
-    },
-    yAxis: {
-      name: charts.unit,
-      type: "value",
-      axisLabel: {
-        formatter: "{value}",
-        //   数字颜色
-        textStyle: {
-          color: "#ffffff",
-        },
-      },
-      // 标线的颜色
-      splitLine: {
-        lineStyle: {
-          color: "rgb(23,255,243,0.3)",
-        },
-      },
-      // 单位的颜色
-      axisLine: {
-        lineStyle: {
-          color: "#ffffff",
-        },
-      },
-    },
-    series: lineY,
-  };
-
-  chartInstance.setOption(option);
-};
-
+const chartDom = ref(null);// 电流数据
 onMounted(async () => {
   const newData = dainLiuData.map((item: any[]) => formatTimestampWithMicroseconds(item[0]))
-  currentFun(newData, dainLiuDataArrayData)
+  currentFun(chartDom,newData, dainLiuDataArrayData)  //电流数据
 });
 </script>
 <template>
