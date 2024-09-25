@@ -45,9 +45,7 @@ export const currentFun = (
   const chatHead = echData[0]
   const xAxisData = echData.slice(1)
   const chatCon = echData.slice(1).map((item: any[]) => formatTimestampWithMicroseconds(item[0]))
-  console.log("传进来的数据", chatHead);
-  console.log("传进来的数据chatCon", chatCon);
-  console.log("传进来的数据xAxisData", xAxisData);
+
   const chartInstance = echarts.init(chartDom.value);
   var charts = {
     unit: chartObj.unit,

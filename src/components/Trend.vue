@@ -2,7 +2,7 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-24 11:31:46
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 16:16:45
+ * @LastEditTime: 2024-09-25 16:44:12
  * @FilePath: \Midas-Insight\src\components\Trend.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -78,6 +78,45 @@ const shiZaichart = reactive({
   name: "视在功率",
   unit: 'kVA'
 });
+
+// 温度趋势
+// 环境温度
+// 日期范围选择
+const hvalueStart = ref(getLastWeekTime())   //开始时间
+const hvalueEnd = ref(getCurrentTime()) //结束时间
+// 开始时间选定时间事件
+const hdataChangeStart = (data: any) => {
+  console.log("开始时间", data)
+}
+// 结束时间选定时间事件
+const hdataChangeEnd = (data: any) => {
+  console.log("结束时间", data)
+}
+// 环境温度数据
+const huanJinDom = ref(null);
+const huanJinBom = reactive({
+  name: "环境温度",
+  unit: '℃'
+});
+// A相进线数据
+const AxjDom = ref(null);
+const AxjBom = reactive({
+  name: "A相进线",
+  unit: '℃'
+});
+// B相进线数据
+const BxjDom = ref(null);
+const BxjBom = reactive({
+  name: "B相进线",
+  unit: '℃'
+});
+// C相进线数据
+const CxjDom = ref(null);
+const CxjBom = reactive({
+  name: "C相进线",
+  unit: '℃'
+});
+
 onMounted(async () => {
   await nextTick()
   await currentFun(chartDom, chartBom, dainLiuData)  //电流数据
@@ -85,6 +124,10 @@ onMounted(async () => {
   await currentFun(youGongDom,youGongchart,dainLiuData)  //有功率数据
   await currentFun(wuGongDom,wuGongchart,dainLiuData)  //无功率数据
   await currentFun(shiZaiDom,shiZaichart,dainLiuData)  //视在功率
+  await currentFun(huanJinDom,huanJinBom,dainLiuData)  //环境温度数据
+  await currentFun(AxjDom,AxjBom,dainLiuData)  //A相进线数据
+  await currentFun(BxjDom,BxjBom,dainLiuData)  //B相进线数据
+  await currentFun(CxjDom,CxjBom,dainLiuData)  //C相进线数据
 });
 </script>
 <template>
@@ -140,7 +183,64 @@ onMounted(async () => {
           <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
         </div>
       </el-collapse-item>
-
+      <el-collapse-item title="--环境温度" name="2" :icon="ArrowRightBold">
+        <div class="pa-[15px] box-border flex">
+          <div class="bg-#151515 w-[750px] h-[120px] items-center">
+            <div
+              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
+              开始时间</div>
+            <div>
+              <div class="demo-date-picker">
+                <div class="block">
+                  <el-date-picker v-model="hvalueStart" type="date" placeholder="请选择开始时间" :default-value="new Date()"
+                    @change="hdataChangeStart" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ml-[20px] bg-#151515 w-[750px] h-[120px]">
+            <div
+              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
+              结束时间</div>
+            <div>
+              <div class="demo-date-picker">
+                <div class="block">
+                  <el-date-picker v-model="hvalueEnd" type="date" placeholder="请选择开始时间" :default-value="new Date()"
+                    @change="hdataChangeEnd" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 环境温度 -->
+        <div class="pa-[15px] box-border">
+          <div ref="huanJinDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- A相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="AxjDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- B相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="BxjDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- C相进线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="CxjDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- A相出线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- B相出线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+        <!-- C相出线 -->
+        <div class="pa-[15px] box-border">
+          <div ref="shiZaiDom" class="w-[1520px] h-[420px]"></div>
+        </div>
+      </el-collapse-item>
     </el-collapse>
   </div>
 </template>
