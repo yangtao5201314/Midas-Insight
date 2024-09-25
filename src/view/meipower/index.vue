@@ -2,7 +2,7 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-19 09:48:21
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 10:59:58
+ * @LastEditTime: 2024-09-25 17:32:39
  * @FilePath: \vite3\src\view\login\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,8 +10,8 @@
 import { ref, reactive, onMounted, resolveComponent, onBeforeUnmount } from "vue";
 import Facts from '@/components/Facts.vue'
 import Trend from '@/components/Trend.vue'
-import readXLSX from '@/components/readXLSX.vue'
-import { ElMessage } from 'element-plus'
+import statistics from '@/components/statistics.vue'
+import device from '@/components/device.vue'
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -171,20 +171,22 @@ onMounted(async () => {
             </div>
         </header>
         <main class="mainBox">
-            <div v-if="currentTab == 0">
+            <div v-show="currentTab == 0">
                 <Facts />
             </div>
-            <div v-if="currentTab == 1">
+            <div v-show="currentTab == 1">
                 <Trend />
             </div>
-            <div v-if="currentTab == 2">
-                <readXLSX />
+            <div v-show="currentTab == 2">
+                <statistics />
             </div>
-            <div v-if="currentTab == 3">设备信息</div>
-            <div v-if="currentTab == 4">设备态势</div>
-            <div v-if="currentTab == 5">AI诊断</div>
-            <div v-if="currentTab == 6">事件</div>
-            <div v-if="currentTab == 7">巡检</div>
+            <div v-show="currentTab == 3">
+                <device />
+            </div>
+            <div v-show="currentTab == 4">设备态势</div>
+            <div v-show="currentTab == 5">AI诊断</div>
+            <div v-show="currentTab == 6">事件</div>
+            <div v-show="currentTab == 7">巡检</div>
         </main>
     </div>
 </template>
