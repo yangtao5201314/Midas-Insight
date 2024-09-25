@@ -16,7 +16,8 @@
     "tslib": "^2.7.0",
     "vue": "^3.4.37",
     "vue-router": "^4.4.3",
-    "vxe-table": "^4.7.75"
+    "vxe-table": "^4.7.75",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",
