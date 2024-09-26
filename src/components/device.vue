@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
+import { ElMessage } from 'element-plus'
 import { ArrowRightBold } from '@element-plus/icons-vue'
 import * as echarts from "echarts";
 const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
@@ -36,7 +37,7 @@ const healthEchat = () => {
           show: true,
           color: "#ffffff",
           distance: 20,
-          formatter: function(v) {
+          formatter: function (v) {
             switch (v + "") {
               case "0":
                 return "0";
@@ -146,7 +147,7 @@ const healthEchat = () => {
           show: true,
           offsetCenter: [0, "16%"],
           color: "#ffffff",
-          formatter: function(params) {
+          formatter: function (params) {
             return params;
           },
           textStyle: {
@@ -167,7 +168,24 @@ const healthEchat = () => {
   chartInstance.setOption(option);
 };
 
-
+// 下拉菜单
+interface droType {
+  label:string
+}
+const drowData = reactive<droType[]>([{
+  label: "11-1MP04"
+},{
+  label: "VS1"
+}])
+const shebeiValue = ref<string | number | object>("11-1MP04")
+const handleCommand = (command: string | number | object) => {
+  console.log(`click on item ${command}`)
+  shebeiValue.value = command
+}
+// 查看文档
+const seeWend = ()=>{
+  
+}
 
 onMounted(async () => {
   healthEchat();
@@ -181,16 +199,27 @@ onMounted(async () => {
           <div class="w-[405px] h-[240px] bg-#151515 ml-10px pos-relative">
             <div ref="chartDom" style="width: 465px; height: 410px;" class="chartDomcL"></div>
           </div>
-          <div  class="w-[405px] h-[240px] ml-[15px] flex flex-col justify-between">
+          <div class="w-[405px] h-[240px] ml-[15px] flex flex-col justify-between">
             <div class="w-100% h-48% bg-#151515 flex flex-col justify-center items-center">
-              <div class="c-#c2c2c2">选择设备</div>
-              <div>下拉菜单</div>
+              <div class="c-#c2c2c2 font-size-20px">选择设备</div>
+              <el-dropdown placement="bottom"  @command="handleCommand">
+                <div class="flex w-150px h-30px items-center justify-center">  
+                  <div class="mr-10px c-#c6c6c6">{{ shebeiValue }}</div>  
+                  <el-icon :size="20" color="#636363">
+                    <CaretBottom />
+                  </el-icon></div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item :command="item.label" v-for="(item,index) in drowData" :key="index">{{ item.label }}</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
             </div>
-            <div class="w-100% h-48% bg-#151515">1</div>
+            <div class="w-100% h-48% bg-#151515 flex items-center justify-center font-size-16px cursor-pointer" @click="seeWend">查看文档</div>
           </div>
         </div>
       </el-collapse-item>
-      
+
     </el-collapse>
   </div>
 </template>
@@ -199,34 +228,42 @@ onMounted(async () => {
 .demo-collapse {
   padding-right: 20px;
 }
- :deep(.el-collapse) {
+
+:deep(.el-collapse) {
   border-top: 1px solid #000000;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-:deep(.el-collapse)
-.el-collapse-item__wrap {
+
+:deep(.el-collapse) .el-collapse-item__wrap {
   border: none;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-:deep(.el-collapse-item__wrap)  {
+
+:deep(.el-collapse-item__wrap) {
   border-bottom: 1px solid #000000 !important;
 }
-:deep(.el-collapse-item__header){
+
+:deep(.el-collapse-item__header) {
   color: #fff;
   font-weight: bold;
   font-size: 1em;
   border-bottom: 1px solid #000000;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-:deep(.el-collapse-item__content){
+
+:deep(.el-collapse-item__content) {
   color: #fff;
   background-color: rgba(0, 0, 0, 1) !important;
 }
+
 :deep(button:focus),
 button:focus-visible {
-  outline: none !important; /* 移除默认的边框 */
-  box-shadow: none !important; /* 移除阴影效果（如果有的话） */
+  outline: none !important;
+  /* 移除默认的边框 */
+  box-shadow: none !important;
+  /* 移除阴影效果（如果有的话） */
 }
+
 .twoleft {
   width: 405px;
   height: 240px;
@@ -241,6 +278,4 @@ button:focus-visible {
   left: 50%;
   transform: translate(-50%, -45%);
 }
-
-
 </style>
