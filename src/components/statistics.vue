@@ -1,490 +1,144 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
 import { ArrowRightBold } from '@element-plus/icons-vue'
-import * as echarts from "echarts";
 const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
-// 柜体数据
-interface cabinetType {
-  name: string;
-  value: string;  
-}
-const cabinet = reactive<cabinetType[]>([
-  {
-    name: "柜体编号",
-    value: "11-1MP04"
-  },
-  {
-    name: "柜体型号",
-    value: "KYN28A-12"
-  }
-]);
 // 折叠面板按钮事件
 const handleChange = (val: string[]) => {
   console.log(val);
 };
-// 健康度
-const chartDom = ref(null);
-let chartInstance = null;
-const healthEchat = () => {
-  chartInstance = echarts.init(chartDom.value);
-  const option = {
-    backgroundColor: "rgba(0,0,0,0)",
-    series: [
-      {
-        name: "刻度",
-        type: "gauge",
-        radius: "53%",
-        min: 0, //最小刻度
-        max: 100, //最大刻度
-        splitNumber: 10, //刻度数量
-        startAngle: 225,
-        endAngle: -45,
-        axisLine: {
-          show: true,
-          lineStyle: {
-            width: 1,
-            color: [[1, "rgba(0,0,0,0)"]]
-          }
-        }, //仪表盘轴线
-        axisLabel: {
-          show: true,
-          color: "#ffffff",
-          distance: 20,
-          formatter: function(v) {
-            switch (v + "") {
-              case "0":
-                return "0";
-              case "10":
-                return "10";
-              case "20":
-                return "20";
-              case "30":
-                return "30";
-              case "40":
-                return "40";
-              case "50":
-                return "50";
-              case "60":
-                return "60";
-              case "70":
-                return "70";
-              case "80":
-                return "80";
-              case "90":
-                return "90";
-              case "100":
-                return "100";
-            }
-          }
-        }, //刻度标签。
-        axisTick: {
-          show: true,
-          splitNumber: 9,
-          lineStyle: {
-            color: "#fff",
-            width: 0.3
-          },
-          length: -15
-        }, //刻度样式
-        splitLine: {
-          show: true,
-          length: -25,
-          lineStyle: {
-            color: "#fff",
-            width: 0.5,
-            height: 0.5
-          }
-        }, //分隔线样式
-        detail: {
-          show: false
-        },
-        pointer: {
-          show: false
-        }
-      },
-      {
-        type: "gauge",
-        radius: "40%",
-        center: ["50%", "50%"],
-
-        splitNumber: 0, //刻度数量
-        startAngle: 225,
-        endAngle: -45,
-        axisLine: {
-          show: true,
-          lineStyle: {
-            width: 10,
-            color: [
-              [
-                0.96,
-                new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                  {
-                    offset: 0,
-                    color: "#ffb498"
-                    // color: "#5c53de"
-                  },
-                  {
-                    offset: 1,
-                    color: "#ffb498"
-                    // color: "#18c8ff"
-                  }
-                ])
-              ],
-              [1, "#413e54"]
-            ]
-          }
-        },
-        //分隔线样式。
-        splitLine: {
-          show: false
-        },
-        axisLabel: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        },
-        pointer: {
-          show: false
-        },
-        title: {
-          show: true,
-          offsetCenter: [0, "-26%"], // x, y，单位px
-          textStyle: {
-            color: "#fff",
-            fontSize: 14
-          }
-        },
-        //仪表盘详情，用于显示数据。
-        detail: {
-          show: true,
-          offsetCenter: [0, "16%"],
-          color: "#ffffff",
-          formatter: function(params) {
-            return params;
-          },
-          textStyle: {
-            fontSize: 20
-          }
-        },
-        data: [
-          {
-            name: "总体健康度",
-            value: 96
-          }
-        ]
-      }
-    ]
-  };
-
-  chartInstance.setOption(option);
-};
-interface healthType {
+interface fenZhaType {
   name: string;
   value: number;
 }
-const healthData = reactive<healthType[]>([
+// 分闸线圈
+const fenZhaData = reactive<fenZhaType[]>([
   {
-    name: "温度健康度",
-    value: 100
+    name: "动作次数",
+    value: 2
   },
   {
-    name: "温度健康度",
-    value: 100
+    name: "动作最大电流（A）",
+    value: 1.7
   },
   {
-    name: "储能电机健康度",
-    value: 90
+    name: "动作最小电流（A）",
+    value: 1.7
   },
   {
-    name: "分闸线圈健康度",
-    value: 97
-  },
-  {
-    name: "合闸线圈健康度",
-    value: 98
+    name: "电流参考值（A,可设置）",
+    value: 0.0
   }
 ]);
-// 电气数据
-interface DataItem {
-  name: string;
-  value: string | number
-}
-
-interface ElectricalData {
-  title: string;
-  data: DataItem[];
-}
-
-const electricalData = reactive<ElectricalData[]>([
+// 合闸线圈
+const heZhaData = reactive<fenZhaType[]>([
   {
-    title: "电流（A）",
-    data: [
-      {
-        name: "la",
-        value: 4.4
-      },
-      {
-        name: "lb",
-        value: 5.3
-      },
-      {
-        name: "lc",
-        value: 5.1
-      }
-    ]
+    name: "动作次数",
+    value: 4
   },
   {
-    title: "电压（V）",
-    data: [
-      {
-        name: "Uab",
-        value: 10339.0
-      },
-      {
-        name: "Ubc",
-        value: 10355.1
-      },
-      {
-        name: "Uca",
-        value: 10337.7
-      }
-    ]
+    name: "动作最大电流（A）",
+    value: 1.8
   },
   {
-    title: "功率",
-    data: [
-      {
-        name: "P",
-        value: "83.5kW"
-      },
-      {
-        name: "Q",
-        value: "22.7kvar"
-      },
-      {
-        name: "S",
-        value: "89.9kVA"
-      }
-    ]
+    name: "动作最小电流（A）",
+    value: 1.8
   },
   {
-    title: "功率因数",
-    data: [
-      {
-        name: "A",
-        value: 0.96
-      },
-      {
-        name: "B",
-        value: 0.96
-      },
-      {
-        name: "C",
-        value: 0.96
-      }
-    ]
-  },
-  {
-    title: "电流谐波总含量 （%）",
-    data: [
-      {
-        name: "A",
-        value: 7.5
-      },
-      {
-        name: "B",
-        value: 7.4
-      },
-      {
-        name: "C",
-        value: 7.5
-      }
-    ]
-  },
-  {
-    title: "电压谐波总含量（%）",
-    data: [
-      {
-        name: "A",
-        value: 1.5
-      },
-      {
-        name: "B",
-        value: 1.5
-      },
-      {
-        name: "C",
-        value: 1.5
-      }
-    ]
+    name: "电流参考值（A,可设置）",
+    value: 0.0
   }
 ]);
-
-// 环境数据
-const huanjiData = reactive<DataItem[]>([
+// 储能电机
+const chuNengData = reactive<fenZhaType[]>([
   {
-    name: "环境温度",
-    value: "27.9℃"
+    name: "动作次数",
+    value: 4
   },
   {
-    name: "环境湿度",
-    value: "80.9%"
+    name: "最大电流（A）",
+    value: 5.4
   },
   {
-    name: "放电-声波",
-    value: "1.0"
+    name: "电流参考值（A，可设置）",
+    value: 0.0
   },
   {
-    name: "放电-电波",
-    value: "--"
+    name: "最大储能时间（s）",
+    value: 4.0
   },
   {
-    name: "A相进线温度",
-    value: "30.7℃"
-  },
+    name: "最小储能时间（s）",
+    value: 4.0
+  },    
   {
-    name: "B相进线温度",
-    value: "31.2℃"
-  },
-  {
-    name: "C相进线温度",
-    value: "30.5℃"
-  },
-  {
-    name: "A相出线温度",
-    value: "30.6℃"
-  },
-  {
-    name: "B相出线温度",
-    value: "30.4℃"
-  },
-  {
-    name: "C相出线温度",
-    value: "27.9℃"
-  },
-  {
-    name: "烟气0.3",
-    value: "3978.0"
-  },
-  {
-    name: "烟气0.5",
-    value: "1864.0"
-  },
-  {
-    name: "烟气1",
-    value: "14.0"
-  },
-  {
-    name: "烟气2.5",
-    value: "0.0"
-  },
-  {
-    name: "烟气5",
-    value: "0.0"
-  },
-  {
-    name: "烟气10",
-    value: "0.0"
+    name: "储能时间参考值（s，可设置）",
+    value: 0.0
   }
 ]);
-
-// 湿场数据
-const shiChaData = reactive<DataItem[]>([
-  {
-    name: "温场1-A相进线",
-    value: "27.9℃"
-  },
-  {
-    name: "温场1-B相进线",
-    value: "80.9%"
-  },
-  {
-    name: "温场1-C相进线",
-    value: "1.0"
-  },
-  {
-    name: "温场2-A相进线",
-    value: "--"
-  },
-  {
-    name: "温场2-B相进线",
-    value: "30.7℃"
-  },
-  {
-    name: "温场2-C相进线",
-    value: "31.2℃"
-  },
-  {
-    name: "温场3-A相",
-    value: "30.5℃"
-  },
-  {
-    name: "温场3-B相",
-    value: "30.6℃"
-  },
-  {
-    name: "温场3-C相",
-    value: "27.9℃"
-  }
-]);
-// 设备在线状态
-const settType = reactive([
-  {
-    name: "insight装置",
-    isType: true // 开关
-  },
-  {
-    name: "串口服务器",
-    isType: true
-  },
-  {
-    name: "断路器室温场",
-    isType: true
-  },
-  {
-    name: "母线室温场",
-    isType: true
-  },
-  {
-    name: "电缆室温场",
-    isType: true
-  }
-]);
-// 开关按钮
-const swchChange = (e,item)=>{
-    console.log(e,item)
-}
 
 onMounted(async () => {
-  healthEchat();
 });
 </script>
 <template>
   <div class="demo-collapse">
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item title="--开关核心部件" name="1" :icon="ArrowRightBold">
-        <div class="contEne">
-          <div class="one-item" v-for="(item,index) in cabinet" :key="index">
-            <div class="EneItem" style="fontWeight: 400">{{ item.name }}</div>
-            <div class="EneItem">{{ item.value }}</div>
-          </div>
-        </div>
-      </el-collapse-item>
-      <el-collapse-item title="--健康度" name="2" :icon="ArrowRightBold">
-        <div class="contEne">
-          <div class="twoleft">
-            <div ref="chartDom" style="width: 350px; height: 310px;" class="chartDomcL"></div>
-          </div>
-          <div class="tworight">
-            <div class="tworight-item" v-for="(item,index) in healthData" :key="index">
-              <div>{{ item.name }}</div>
-              <div>{{ item.value }}</div>
+        <div class="pa-[15px] box-border flex">
+          <div class="w-[750px]">
+            <div class="bg-#151515 w-[100%] h-[70px] items-center flex justify-center">
+              <div class="c-#565656 font-size-[20px]">分闸线圈</div>
+              <div class="mt-[6px] ml-[6px]">
+                <el-icon :size="20" color="#636363">
+                  <CaretBottom />
+                </el-icon>
+              </div>
+            </div>
+            <div class="w-[100%] flex justify-between" v-for="(item, index) in fenZhaData" :key="index">
+              <div class="w-[49.4%] h-[60px] bg-#151515 mt-[10px] c-#808080 font-size-[20px] text-center lh-[60px]">{{
+                item.name }}</div>
+              <div
+                class="w-[49.4%] h-[60px] bg-#151515 mt-[10px] c-#888888 font-size-[25px] text-center lh-[60px] fw-bold">
+                {{ item.value }}</div>
+            </div>
+            <div class="bg-#151515 w-[100%] h-[70px] items-center flex justify-center mt-[10px]">
+              <div class="c-#565656 font-size-[20px]">合闸线圈</div>
+              <div class="mt-[6px] ml-[6px]">
+                <el-icon :size="20" color="#636363">
+                  <CaretBottom />
+                </el-icon>
+              </div>
+            </div>
+            <div class="w-[100%] flex justify-between" v-for="(item, index) in heZhaData" :key="index">
+              <div class="w-[49.4%] h-[60px] bg-#151515 mt-[10px] c-#808080 font-size-[20px] text-center lh-[60px]">{{
+                item.name }}</div>
+              <div
+                class="w-[49.4%] h-[60px] bg-#151515 mt-[10px] c-#888888 font-size-[25px] text-center lh-[60px] fw-bold">
+                {{ item.value }}</div>
             </div>
           </div>
+
+          <div class="w-[750px]">
+            <div class="ml-[20px] bg-#151515 w-[100%] h-[70px] items-center flex justify-center">
+              <div class="c-#565656 font-size-[20px]">储能电机</div>
+              <div class="mt-[6px] ml-[6px]">
+                <el-icon :size="20" color="#636363">
+                  <CaretBottom />
+                </el-icon>
+              </div>
+            </div>  
+          
+            <div class="ml-[20px] w-[100%] flex justify-between" v-for="(item, index) in chuNengData" :key="index">
+              <div class="w-[49.4%] h-[97px] bg-#151515 mt-[10px] c-#808080 font-size-[20px] text-center flex items-center justify-center">{{
+                item.name }}</div>
+              <div
+                class="w-[49.4%] h-[97px] bg-#151515 mt-[10px] c-#888888 font-size-[25px] text-center fw-bold  flex items-center justify-center">
+                {{ item.value }}</div>
+            </div>
+          </div>
+
         </div>
       </el-collapse-item>
-      
+
     </el-collapse>
   </div>
 </template>
@@ -493,38 +147,47 @@ onMounted(async () => {
 .demo-collapse {
   padding-right: 20px;
 }
+
 .icon-ele {
   margin: 0 8px 0 auto;
   color: #409eff;
 }
- :deep(.el-collapse) {
+
+:deep(.el-collapse) {
   border-top: 1px solid #000000;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-:deep(.el-collapse)
-.el-collapse-item__wrap {
+
+:deep(.el-collapse) .el-collapse-item__wrap {
   border: none;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-:deep(.el-collapse-item__wrap)  {
+
+:deep(.el-collapse-item__wrap) {
   border-bottom: 1px solid #000000 !important;
 }
-:deep(.el-collapse-item__header){
+
+:deep(.el-collapse-item__header) {
   color: #fff;
   font-weight: bold;
   font-size: 1em;
   border-bottom: 1px solid #000000;
   background-color: rgba(0, 0, 0, 0) !important;
 }
-:deep(.el-collapse-item__content){
+
+:deep(.el-collapse-item__content) {
   color: #fff;
   background-color: rgba(0, 0, 0, 1) !important;
 }
+
 :deep(button:focus),
 button:focus-visible {
-  outline: none !important; /* 移除默认的边框 */
-  box-shadow: none !important; /* 移除阴影效果（如果有的话） */
+  outline: none !important;
+  /* 移除默认的边框 */
+  box-shadow: none !important;
+  /* 移除阴影效果（如果有的话） */
 }
+
 .contEne {
   /* color: #ffffff; */
   padding: 15px;
@@ -532,6 +195,7 @@ button:focus-visible {
   display: flex;
   /* flex-wrap: wrap; */
 }
+
 .one-item {
   width: 740px;
   display: flex;
@@ -540,6 +204,7 @@ button:focus-visible {
   margin-bottom: 10px;
   /* border: 1px solid #ffffff; */
 }
+
 .EneItem {
   width: 365px;
   height: 80px;
@@ -552,6 +217,7 @@ button:focus-visible {
   font-weight: bold;
   font-size: 1.6em;
 }
+
 .twoleft {
   width: 365px;
   height: 200px;
@@ -559,11 +225,13 @@ button:focus-visible {
   margin-left: 10px;
   position: relative;
 }
+
 .tworight {
   margin-left: 10px;
   display: flex;
   flex-wrap: wrap;
 }
+
 .tworight-item {
   width: 216px;
   height: 98px;
@@ -572,23 +240,25 @@ button:focus-visible {
   padding-top: 15px;
   margin-bottom: 4px;
 }
-.tworight-item > div {
+
+.tworight-item>div {
   text-align: center;
 }
-.tworight-item > div:nth-child(1) {
+
+.tworight-item>div:nth-child(1) {
   font-size: 16px;
 }
-.tworight-item > div:nth-child(2) {
+
+.tworight-item>div:nth-child(2) {
   font-size: 28px;
   color: #888888;
   font-weight: bold;
 }
+
 .chartDomcL {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -45%);
 }
-
-
 </style>

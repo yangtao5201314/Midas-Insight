@@ -113,7 +113,7 @@ const healthEchat = () => {
         axisLine: {
           show: true,
           lineStyle: {
-            width: 10,
+            width: 15,
             color: [
               [
                 0.96,
@@ -164,7 +164,8 @@ const healthEchat = () => {
             return params;
           },
           textStyle: {
-            fontSize: 20
+            fontSize: 20,
+            color: "#ffab91"
           }
         },
         data: [
@@ -452,7 +453,7 @@ const settType = reactive([
   }
 ]);
 // 开关按钮
-const swchChange = (e,item)=>{
+const swchChange = (e: any,item: any)=>{
     console.log(e,item)
 }
 
@@ -466,7 +467,7 @@ onMounted(async () => {
       <el-collapse-item title="--柜体" name="1" :icon="ArrowRightBold">
         <div class="contEne">
           <div class="one-item" v-for="(item,index) in cabinet" :key="index">
-            <div class="EneItem" style="fontWeight: 400">{{ item.name }}</div>
+            <div class="EneItem" style="font-weight: 400">{{ item.name }}</div>
             <div class="EneItem">{{ item.value }}</div>
           </div>
         </div>
