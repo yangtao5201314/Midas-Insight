@@ -220,3 +220,164 @@ export const currentFun = (
   });
   chartInstance.setOption(option);
 };
+
+interface numType {
+  name: string;
+  num: number;
+}
+// echars饼状图封装
+export const healthEchat = (dom: { value: HTMLElement | null | undefined },chartObj: numType) => {
+  const chartInstance = echarts.init(dom.value);
+  const option = {
+    backgroundColor: "rgba(0,0,0,0)",
+    series: [
+      {
+        name: "刻度",
+        type: "gauge",
+        radius: "53%",
+        min: 0, //最小刻度
+        max: 100, //最大刻度
+        splitNumber: 10, //刻度数量
+        startAngle: 225,
+        endAngle: -45,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            width: 1,
+            color: [[1, "rgba(0,0,0,0)"]]
+          }
+        }, //仪表盘轴线
+        axisLabel: {
+          show: true,
+          color: "#ffffff",
+          distance: 20,
+          formatter: function (v: string) {
+            switch (v + "") {
+              case "0":
+                return "0";
+              case "10":
+                return "10";
+              case "20":
+                return "20";
+              case "30":
+                return "30";
+              case "40":
+                return "40";
+              case "50":
+                return "50";
+              case "60":
+                return "60";
+              case "70":
+                return "70";
+              case "80":
+                return "80";
+              case "90":
+                return "90";
+              case "100":
+                return "100";
+            }
+          }
+        }, //刻度标签。
+        axisTick: {
+          show: true,
+          splitNumber: 9,
+          lineStyle: {
+            color: "#fff",
+            width: 0.3
+          },
+          length: -15
+        }, //刻度样式
+        splitLine: {
+          show: true,
+          length: -25,
+          lineStyle: {
+            color: "#fff",
+            width: 0.5,
+            height: 0.5
+          }
+        }, //分隔线样式
+        detail: {
+          show: false
+        },
+        pointer: {
+          show: false
+        }
+      },
+      {
+        type: "gauge",
+        radius: "40%",
+        center: ["50%", "50%"],
+
+        splitNumber: 0, //刻度数量
+        startAngle: 225,
+        endAngle: -45,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            width: 25,
+            color: [
+              [
+                chartObj.num/100,
+                new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                  {
+                    offset: 0,
+                    color: "#ffb498"
+                    // color: "#5c53de"
+                  },
+                  {
+                    offset: 1,
+                    color: "#ffb498"
+                    // color: "#18c8ff"
+                  }
+                ])
+              ],
+              [1, "#413e54"]
+            ]
+          }
+        },
+        //分隔线样式。
+        splitLine: {
+          show: false
+        },
+        axisLabel: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        pointer: {
+          show: false
+        },
+        title: {
+          show: true,
+          offsetCenter: [0, "-26%"], // x, y，单位px
+          textStyle: {
+            color: "#fff",
+            fontSize: 16
+          }
+        },
+        //仪表盘详情，用于显示数据。
+        detail: {
+          show: true,
+          offsetCenter: [0, "16%"],
+          color: "#ffffff",
+          formatter: function (params: any) {
+            return params;
+          },
+          textStyle: {
+            fontSize: 30,
+            color: "#ffab91",
+          }
+        },
+        data: [
+          {
+            name: chartObj.name,
+            value: chartObj.num
+          }
+        ]
+      }
+    ]
+  };
+
+  chartInstance.setOption(option);
+};

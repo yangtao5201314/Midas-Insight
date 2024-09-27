@@ -192,7 +192,6 @@ const handleCommand = (command: string | number | object) => {
   shebeiValue.value = command
   const newdata = maxData.find(item => item.name == command)
   zuiData.value = newdata?.sheData
-  console.log(zuiData.value)
 }
 
 // 11-1MP04的数据
@@ -415,7 +414,7 @@ const maxData = reactive<dro[]>([{
   ]
 }])
 // 查看文档
-const dialogTableVisible = ref(true)
+const dialogTableVisible = ref(false)
 const seeWend = () => {
   dialogTableVisible.value = true
 }
@@ -427,22 +426,53 @@ interface RowVO {
   id: number
   name: string
   role: string
-  sex: string
+  url: string
 }
 
 const tableData = ref<RowVO[]>([
-  { id: 10001, name: 'EMP600N通用型保护测控装置产品使用手册1.pdfEMP600N通用型保护测控装置产品使用手册1.pdf', role: 'Develop', sex: 'Man' },
-  { id: 10002, name: 'EMP600N通用型保护测控装置产品使用手册2.pdf', role: 'Test', sex: 'Women' },
-  { id: 10003, name: 'EMP600N通用型保护测控装置产品使用手册3.pdf', role: 'PM', sex: 'Man' },
-  { id: 10004, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', sex: 'Women' }
+  { id: 10001, name: 'EMP600N通用型保护测控装置产品使用手册1.pdfEMP600N通用型保护测控装置产品使用手册1.pdf', role: 'Develop', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10002, name: 'EMP600N通用型保护测控装置产品使用手册2.pdf', role: 'Test', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10003, name: 'EMP600N通用型保护测控装置产品使用手册3.pdf', role: 'PM', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10004, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10005, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10006, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10007, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10008, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
+  { id: 10009, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', url: 'http://192.168.0.13:1880/deviceFile/KS-20B6.pdf' },
 ])
 // 产看按钮
-const viewEvent = (item:any)=>{
-
+// 定义接口
+interface Item {
+  url: string; // 根据实际数据结构添加其他属性
+}
+const dialogTableVisiblepdf = ref(false)
+const pdfurl = ref<string>("")
+const viewEvent = (item: Item) => {
+  dialogTableVisiblepdf.value = true
+  pdfurl.value = item?.url
+  console.log(item)
 }
 // 删除按钮
-const delEvent = ()=>{
-  
+const delEvent = (item: any) => {
+  console.log("删除事件", item)
+}
+interface RowData {
+  // 根据实际数据结构定义 row 的属性
+  [key: string]: any; // 示例：可以具体化为 { id: number, name: string, ... }
+}
+
+interface RowStyleParams {
+  row: RowData;
+  rowIndex: number;
+}
+// 表内容颜色
+const rowStyle = ({ }: RowStyleParams): { [key: string]: string } => {
+  return { 'background-color': '#151515', 'font-weight': 'bolder!important', 'color': '#cdcdcd' }
+
+}
+// 表头颜色1
+const headerClass = () => {
+  return { 'background-color': '#80827e', 'font-weight': 'bolder!important', 'color': '#cdcdcd' }
 }
 onMounted(async () => {
   healthEchat();
@@ -510,21 +540,48 @@ onMounted(async () => {
   <!-- 文档弹出框 -->
   <el-dialog v-model="dialogTableVisible" :close-on-click-modal="false" width="90%" :align-center="true"
     style="background: #606060;">
-    <div class="w-98% h-50vh m-20px flex">
+    <div class="w-98% h-80vh m-20px flex">
       <div class="w-34% bg-#151515 h-100%">
-        <vxe-table :data="tableData" border header-align="center" footer-align="center" show-overflow=".tooltip">
+        <div class="c-#bebebe font-size-[1.5em] w-[100%] text-center">文件列表</div>
+        <vxe-table :data="tableData" :row-style="rowStyle" border header-align="center" max-height="80%"
+          :header-cell-style="headerClass" footer-align=".center" show-overflow=".tooltip">
           <vxe-column type="seq" width="70"></vxe-column>
-          <vxe-column field="name" title="Name"></vxe-column>
+          <vxe-column field="name" title="文件名"></vxe-column>
           <vxe-column title="操作" width="160">
             <template #default="{ row }">
+              
               <vxe-button style="background-color: #4caf50; color: #FFFFFF;" @click="viewEvent(row)">查看</vxe-button>
-              <vxe-button style="background-color: #f44336; color: #FFFFFF;" type="danger" @click="delEvent(row)">删除</vxe-button>
+              <el-popconfirm title="确定要删除吗?" @confirm="delEvent(row)">
+                <template #reference>
+                  <vxe-button style="background-color: #f44336; color: #FFFFFF;">删除</vxe-button>
+                </template>
+              </el-popconfirm>
             </template>
           </vxe-column>
         </vxe-table>
       </div>
-      <div class="w-34% bg-#151515 h-100% ml-20px"></div>
+      <div class="w-34% bg-#151515 h-100% ml-20px">
+        <div class="c-#bebebe font-size-[1.5em] w-[100%] text-center">上传文件</div>
+        <el-upload class="upload-demo" accept=".xlsx,.xls,.pdf,.PDF" :limit="3" drag action="http://192.168.0.13:1880/upload"
+          multiple>
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">
+            拖拽上传 <em>点击上传</em>
+          </div>
+          <template #tip>
+            <div class="el-upload__tip bg-#ffffff">
+              <!-- jpg/png files with a size less than 500kb -->
+            </div>
+          </template>
+        </el-upload>
+      </div>
     </div>
+  </el-dialog>
+  <!-- pdf查看弹出窗 -->
+  <el-dialog v-model="dialogTableVisiblepdf" :close-on-click-modal="false" width="90%" :align-center="true"
+  style="background: #606060;">
+  <embed :src="pdfurl" type="application/pdf" width="100%" height="900px">
+
   </el-dialog>
 </template>
 

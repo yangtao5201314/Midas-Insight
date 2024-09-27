@@ -2,7 +2,7 @@
  * @Author: 杨涛 2749552387@qq.com
  * @Date: 2024-09-19 09:48:21
  * @LastEditors: 杨涛 2749552387@qq.com
- * @LastEditTime: 2024-09-25 17:32:39
+ * @LastEditTime: 2024-09-27 11:16:48
  * @FilePath: \vite3\src\view\login\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,6 +12,7 @@ import Facts from '@/components/Facts.vue'
 import Trend from '@/components/Trend.vue'
 import statistics from '@/components/statistics.vue'
 import device from '@/components/device.vue'
+import situation from '@/components/situation.vue'
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -183,7 +184,9 @@ onMounted(async () => {
             <div v-show="currentTab == 3">
                 <device />
             </div>
-            <div v-show="currentTab == 4">设备态势</div>
+            <div v-show="currentTab == 4">
+                <situation />
+            </div>
             <div v-show="currentTab == 5">AI诊断</div>
             <div v-show="currentTab == 6">事件</div>
             <div v-show="currentTab == 7">巡检</div>
