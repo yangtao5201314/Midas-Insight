@@ -192,6 +192,42 @@ const xianhchartBom = reactive({
     name: "电流",
     unit: 'A'
 });
+// ----------------------------------------------------------------------------------储能电机（AC）
+// 储能电机（AC）
+// 下拉菜单
+interface chuadroType {
+    label: string
+}
+// 储能电机
+const chuadrowData = reactive<chuadroType[]>([{
+    label: "储能电机（AC）"
+}])
+const chuashebeiValue = ref<string | number | object>("储能电机（AC）")
+const chuahandleCommand = (command: string | number | object) => {
+    xianfshebeiValue.value = command
+}
+// 时间线
+const chuatimeData = reactive<droType[]>([{
+    label: "2024-08-13 08：34：33.880"
+}, {
+    label: "2024-08-13 08：34：33.906"
+}])
+const chuatimeValue = ref<string | number | object>("2024-08-13 08：34：33.880")
+const chuatimeCommand = (command: string | number | object) => {
+    chuatimeValue.value = command
+}
+// 健康度图表
+const chuachartDomHeath = ref(null);
+const chuachartBomHeath = reactive({
+    name: "总体健康度",
+    num: 96
+});
+// 电流数据图表
+const chuachartDom = ref(null);
+const chuachartBom = reactive({
+    name: "电流",
+    unit: 'A'
+});
 
 onMounted(async () => {
     // ------------------------------------分闸
@@ -214,6 +250,10 @@ onMounted(async () => {
     await xianhhandleCommand(xianhshebeiValue.value)   //电流
     await healthEchat(xianhchartDomHeath, xianhchartBomHeath)  //电流总体健康度
     await currentFun(xianhchartDom, xianhchartBom, dainLiuData)  //电流数据
+    // ------------------------------------ 储能电机（AC）
+    await chuahandleCommand(chuashebeiValue.value)   //电流 
+    await healthEchat(chuachartDomHeath, chuachartBomHeath)  //电流总体健康度
+    await currentFun(chuachartDom, chuachartBom, dainLiuData)  //电流数据
 });
 </script>
 <template>
@@ -559,7 +599,7 @@ onMounted(async () => {
                     </div>
                 </div>
             </el-collapse-item>
-            <el-collapse-item title="--线圈-合闸线圈（AC）" name="6" :icon="ArrowRightBold">
+            <el-collapse-item title="--储能电机（AC）" name="6" :icon="ArrowRightBold">
                 <div class="flex">
                     <div class="w-1450px">
                         <div class="p-15px box-border flex justify-between">
@@ -567,9 +607,9 @@ onMounted(async () => {
                             <div class="w-[420px] h-[540px] ml-[10px] flex flex-col justify-between">
                                 <!-- 分闸线 -->
                                 <div class="w-100% h-17% bg-#151515 flex flex-col justify-center items-center">
-                                    <el-dropdown placement="bottom" @command="xianhhandleCommand">
+                                    <el-dropdown placement="bottom" @command="chuahandleCommand">
                                         <div class="flex w-150px h-30px items-center justify-center">
-                                            <div class="mr-10px c-#c6c6c6">{{ xianhshebeiValue }}</div>
+                                            <div class="mr-10px c-#c6c6c6">{{ chuashebeiValue }}</div>
                                             <el-icon :size="20" color="#636363">
                                                 <CaretBottom />
                                             </el-icon>
@@ -577,7 +617,7 @@ onMounted(async () => {
                                         <template #dropdown>
                                             <el-dropdown-menu>
                                                 <el-dropdown-item :command="item.label"
-                                                    v-for="(item, index) in xianhdrowData" :key="index">{{
+                                                    v-for="(item, index) in chuadrowData" :key="index">{{
                                                         item.label }}</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </template>
@@ -585,9 +625,9 @@ onMounted(async () => {
                                 </div>
                                 <!-- 时间框 -->
                                 <div class="w-100% h-17% bg-#151515 flex flex-col justify-center items-center">
-                                    <el-dropdown placement="bottom" @command="xianhtimeCommand">
+                                    <el-dropdown placement="bottom" @command="chuatimeCommand">
                                         <div class="flex w-250px h-30px items-center justify-center">
-                                            <div class="mr-10px c-#c6c6c6">{{ xianhtimeValue }}</div>
+                                            <div class="mr-10px c-#c6c6c6">{{ chuatimeValue }}</div>
                                             <el-icon :size="20" color="#636363">
                                                 <CaretBottom />
                                             </el-icon>
@@ -595,7 +635,7 @@ onMounted(async () => {
                                         <template #dropdown>
                                             <el-dropdown-menu>
                                                 <el-dropdown-item :command="item.label"
-                                                    v-for="(item, index) in xianhtimeData" :key="index">{{
+                                                    v-for="(item, index) in chuatimeData" :key="index">{{
                                                         item.label }}</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </template>
@@ -606,7 +646,7 @@ onMounted(async () => {
                                     class="w-100% h-63% bg-#151515 flex items-center justify-center font-size-16px cursor-pointer">
                                     <div class="w-[420px] h-[240px] bg-#151515 pos-relative">
                                         <div class="w-100% text-center mt--30px">健康度</div>
-                                        <div ref="xianhchartDomHeath" style="width: 465px; height: 410px;"
+                                        <div ref="chuachartDomHeath" style="width: 465px; height: 410px;"
                                             class="chartDomcL"></div>
                                     </div>
                                 </div>
@@ -621,7 +661,7 @@ onMounted(async () => {
                         <div class="ml-25px bg-#151515 p-15px box-border w-97.2% h-350px">
                             <!-- 电流 -->
                             <div class="pa-[15px] box-border">
-                                <div ref="xianhchartDom" class="w-[1350px] h-[300px]"></div>
+                                <div ref="chuachartDom" class="w-[1350px] h-[300px]"></div>
                             </div>
                         </div>
                     </div>
