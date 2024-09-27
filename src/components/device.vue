@@ -436,6 +436,14 @@ const tableData = ref<RowVO[]>([
   { id: 10003, name: 'EMP600N通用型保护测控装置产品使用手册3.pdf', role: 'PM', sex: 'Man' },
   { id: 10004, name: 'EMP600N通用型保护测控装置产品使用手册4.pdf', role: 'Designer', sex: 'Women' }
 ])
+// 产看按钮
+const viewEvent = (item:any)=>{
+
+}
+// 删除按钮
+const delEvent = ()=>{
+  
+}
 onMounted(async () => {
   healthEchat();
   handleCommand(shebeiValue.value)
