@@ -2,10 +2,9 @@
 import { ref, reactive, onMounted } from "vue";
 import type { TableColumnCtx } from 'element-plus'
 import { ArrowRightBold } from '@element-plus/icons-vue'
-import * as echarts from "echarts";
-const activeNames = ref(["1", "2", "3", "4", "5", "6"]); //默认展开第几列
+const activeNames = ref(["1", "2", "3", "4", "5", "6","7"]); //默认展开第几列
 import { dainLiuData } from "@/utils/echars1.ts"
-import { currentFun, healthEchat } from "@/utils/utils.ts"
+import { currentFun, healthEchat,barEchat } from "@/utils/utils.ts"
 
 // 折叠面板按钮事件
 const handleChange = (val: string[]) => {
@@ -228,6 +227,25 @@ const chuachartBom = reactive({
     name: "电流",
     unit: 'A'
 });
+// ----------------------------------------------------------------------------------温升
+// interface chuadroType {
+//     label: string
+// }
+// // 温升
+// const chuadrowData = reactive<chuadroType[]>([{
+//     label: "储能电机（AC）"
+// }])
+// const chuashebeiValue = ref<string | number | object>("储能电机（AC）")
+// const chuahandleCommand = (command: string | number | object) => {
+//     xianfshebeiValue.value = command
+// }
+const barEchar1 = ref(null);
+// const barEchar1Obj = reactive({
+//     name: "电流",
+//     unit: 'A',
+//     number:'34'
+// });
+
 
 onMounted(async () => {
     // ------------------------------------分闸
@@ -254,6 +272,9 @@ onMounted(async () => {
     await chuahandleCommand(chuashebeiValue.value)   //电流 
     await healthEchat(chuachartDomHeath, chuachartBomHeath)  //电流总体健康度
     await currentFun(chuachartDom, chuachartBom, dainLiuData)  //电流数据
+    // ------------------------------------ 温升
+    await barEchat(barEchar1)
+
 });
 </script>
 <template>
@@ -665,6 +686,13 @@ onMounted(async () => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </el-collapse-item>
+            <el-collapse-item title="--温升" name="7" :icon="ArrowRightBold">
+                <div class="flex w-1450px h-500px pl-26px box-border flex" style="border: 1px solid #ffffff">
+                   <div class="bg-#151515 w-200px h-120px pos-relative">
+                        <div ref="barEchar1" style="width: 465px; height: 410px;" class="chartDomcL"></div>
+                   </div>
                 </div>
             </el-collapse-item>
         </el-collapse>
