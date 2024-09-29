@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ref, reactive, onMounted,nextTick } from "vue";
+import { ref, reactive, onMounted, nextTick } from "vue";
 import type { TableColumnCtx } from 'element-plus'
 import { ArrowRightBold } from '@element-plus/icons-vue'
 const activeNames = ref(["1", "2", "3", "4", "5", "6", "7"]); //默认展开第几列
 import { dainLiuData } from "@/utils/echars1.ts"
-import { currentFun, healthEchat, barEchat,getLastWeekTime ,getCurrentTime } from "@/utils/utils.ts"
+import { currentFun, healthEchat, barEchat, getLastWeekTime, getCurrentTime } from "@/utils/utils.ts"
 
 // 折叠面板按钮事件
 const handleChange = (val: string[]) => {
@@ -260,7 +260,7 @@ const barEchar1Obj = reactive({
 //         name: "VCB-IN-B温度",
 //         unit: '℃',
 //         number: 31.9
-        
+
 //     }, {
 //         name: "VCB-IN-C温度",
 //         unit: '℃',
@@ -273,12 +273,29 @@ const valueStart = ref(getLastWeekTime())   //开始时间
 const valueEnd = ref(getCurrentTime()) //结束时间
 // 开始时间选定时间事件
 const dataChangeStart = (data: any) => {
-  console.log("开始时间", data)
+    console.log("开始时间", data)
 }
 // 结束时间选定时间事件
 const dataChangeEnd = (data: any) => {
-  console.log("结束时间", data)
+    console.log("结束时间", data)
 }
+
+// 温升数据图表
+const vcbaDom = ref(null);
+const vcbaDomBom = reactive({
+    name: "VCB-IN-A",
+    unit: ''
+});
+const vcbbDom = ref(null);
+const vcbbDomBom = reactive({
+    name: "VCB-IN-B",
+    unit: ''
+});
+const vcbcDom = ref(null);
+const vcbcDomBom = reactive({
+    name: "VCB-IN-B",
+    unit: ''
+});
 
 
 
@@ -311,9 +328,13 @@ onMounted(async () => {
     await healthEchat(chuachartDomHeath, chuachartBomHeath)  //电流总体健康度
     await currentFun(chuachartDom, chuachartBom, dainLiuData)  //电流数据
     // ------------------------------------ 温升
-    await barEchat(barEchar1,barEchar1Obj)
-    await barEchat(barEchar2,barEchar1Obj)
-    await barEchat(barEchar3,barEchar1Obj)
+    await barEchat(barEchar1, barEchar1Obj)
+    await barEchat(barEchar2, barEchar1Obj)
+    await barEchat(barEchar3, barEchar1Obj)
+ 
+    await currentFun(vcbaDom, vcbaDomBom, dainLiuData)  //温升VCB-IN-A
+    await currentFun(vcbbDom, vcbbDomBom, dainLiuData)  //温升VCB-IN-B
+    await currentFun(vcbcDom, vcbcDomBom, dainLiuData)  //温升VCB-IN-C
     // riseArr.forEach(async (item,index)=>{
     //     // console.log("===index9999====> " +JSON.stringify(chartRefs))
     //     console.log("11111111111111111111",item)
@@ -327,10 +348,10 @@ onMounted(async () => {
     // }
     // riseArr.forEach(async (it,idx)=>{
     //     await barEchat(riskSpreadRefList.value[idx],it)
-        
+
     // })
     // riskSpreadRefList.value?.forEach((item: any) => {
-        
+
     //     console.log("ppppppppppppppppppppppppppp-----",item)
     // });
 
@@ -750,45 +771,68 @@ onMounted(async () => {
             <el-collapse-item title="--温升" name="7" :icon="ArrowRightBold">
                 <div class="flex w-1450px h-500px pl-26px box-border flex">
                     <div class="bg-#151515 w-170px h-140px pos-relative">
-                        <div ref="barEchar1"  style="width: 200px; height: 180px;" class="chartDomcLbar"></div>
-                    </div>  
+                        <div ref="barEchar1" style="width: 200px; height: 180px;" class="chartDomcLbar"></div>
+                    </div>
                     <div class="bg-#151515 w-170px h-140px pos-relative">
-                        <div ref="barEchar2"  style="width: 200px; height: 180px;" class="chartDomcLbar"></div>
-                    </div>  
+                        <div ref="barEchar2" style="width: 200px; height: 180px;" class="chartDomcLbar"></div>
+                    </div>
                     <div class="bg-#151515 w-170px h-140px pos-relative">
-                        <div ref="barEchar3"  style="width: 200px; height: 180px;" class="chartDomcLbar"></div>
-                    </div>  
-                </div>  
+                        <div ref="barEchar3" style="width: 200px; height: 180px;" class="chartDomcLbar"></div>
+                    </div>
+                </div>
                 <div class="pa-[15px] box-border flex">
-          <div class="bg-#151515 w-[350px] h-[120px] items-center">
-            <div
-              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]"> 开始时间</div>
-            <div>
-              <div class="demo-date-picker">
-                <div class="block">
-                  <el-date-picker v-model="valueStart" type="date" placeholder="请选择开始时间" :default-value="new Date()"
-                    @change="dataChangeStart" />
+                    <div class="bg-#151515 w-[350px] h-[120px] items-center">
+                        <div
+                            class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
+                            开始时间</div>
+                        <div>
+                            <div class="demo-date-picker">
+                                <div class="block">
+                                    <el-date-picker v-model="valueStart" type="date" placeholder="请选择开始时间"
+                                        :default-value="new Date()" @change="dataChangeStart" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-[20px] bg-#151515 w-[350px] h-[120px]">
+                        <div
+                            class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
+                            结束时间</div>
+                        <div>
+                            <div class="demo-date-picker">
+                                <div class="block">
+                                    <el-date-picker v-model="valueEnd" type="date" placeholder="请选择开始时间"
+                                        :default-value="new Date()" @change="dataChangeEnd" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="ml-[20px] bg-#151515 w-[150px] h-[120px] flex items-center justify-center font-size-1.5em cursor-pointer">
+                        查询
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="ml-[20px] bg-#151515 w-[350px] h-[120px]">
-            <div
-              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
-              结束时间</div>
-            <div>
-              <div class="demo-date-picker">
-                <div class="block">
-                  <el-date-picker v-model="valueEnd" type="date" placeholder="请选择开始时间" :default-value="new Date()"
-                    @change="dataChangeEnd" />
+                <div class="w-1450px flex flex-wrap">
+                    <div class="ml-16px bg-#151515 p-15px box-border w-48.2% h-350px mb-15px">
+                        <!-- VCB-IN-A -->
+                        <div class="pa-[15px] box-border">
+                            <div ref="vcbaDom" class="w-[650px] h-[300px]"></div>
+                        </div>
+                    </div>
+                    <div class="ml-16px bg-#151515 p-15px box-border w-48.2% h-350px mb-15px">
+                        <!-- VCB-IN-B -->
+                        <div class="pa-[15px] box-border">
+                            <div ref="vcbbDom" class="w-[650px] h-[300px]"></div>
+                        </div>
+                    </div>
+                    <div class="ml-16px bg-#151515 p-15px box-border w-48.2% h-350px mb-15px">
+                        <!-- VCB-IN-C -->
+                        <div class="pa-[15px] box-border">
+                            <div ref="vcbcDom" class="w-[650px] h-[300px]"></div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="ml-[20px] bg-#151515 w-[150px] h-[120px] flex items-center justify-center font-size-1.5em cursor-pointer">
-            查询
-          </div>
-        </div>
+                
             </el-collapse-item>
         </el-collapse>
     </div>
@@ -852,153 +896,153 @@ button:focus-visible {
 
 /* 日期范围样式 */
 .demo-date-picker {
-  display: flex;
-  width: 100%;
-  padding: 0;
-  flex-wrap: wrap;
+    display: flex;
+    width: 100%;
+    padding: 0;
+    flex-wrap: wrap;
 }
 
 .demo-date-picker .block {
-  /* padding: 30px 0; */
-  text-align: center;
-  border-right: solid 1px var(--el-border-color);
-  flex: 1;
+    /* padding: 30px 0; */
+    text-align: center;
+    border-right: solid 1px var(--el-border-color);
+    flex: 1;
 }
 
 .demo-date-picker .block:last-child {
-  border-right: none;
+    border-right: none;
 }
 
 .demo-date-picker .demonstration {
-  display: block;
-  color: var(--el-text-color-secondary);
-  font-size: 14px;
-  margin-bottom: 20px;
+    display: block;
+    color: var(--el-text-color-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
 }
 
 /* 日期选择框的样式 */
 
 :deep(.el-date-picker).has-sidebar.has-time {
-  background: #04308D;
-  color: #fff;
-  border: 1px solid #326AFF
+    background: #04308D;
+    color: #fff;
+    border: 1px solid #326AFF
 }
 
 :deep(.el-date-picker__header-label) {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 :deep(.el-date-table) th {
-  color: #fff;
+    color: #fff;
 }
 
 :deep(.el-icon-d-arrow-left:before) {
-  color: #fff;
+    color: #fff;
 }
 
 .el-icon-arrow-left:before {
-  color: #fff;
+    color: #fff;
 }
 
 .el-icon-arrow-right:before {
-  color: #fff;
+    color: #fff;
 }
 
 .el-icon-d-arrow-right:before {
-  color: #fff;
+    color: #fff;
 }
 
 :deep(.el-picker-panel__footer) {
-  background-color: #04308D;
-  border: 1px solid #326AFF
+    background-color: #04308D;
+    border: 1px solid #326AFF
 }
 
 :deep(.el-picker-panel [slot=sidebar]),
 .el-picker-panel__sidebar {
-  background-color: #04308D !important;
-  border-right: 1px solid #326AFF;
+    background-color: #04308D !important;
+    border-right: 1px solid #326AFF;
 }
 
 :deep(.el-picker-panel__shortcut) {
-  color: #fff;
+    color: #fff;
 }
 
 :deep(.el-date-picker__time-header) {
-  border-bottom: 1px solid #326AFF;
+    border-bottom: 1px solid #326AFF;
 }
 
 .el-popper[x-placement^=bottom] .popper__arrow::after {
-  top: 1px;
-  margin-left: -6px;
-  border-top-width: 0;
-  border-bottom-color: #04308D;
+    top: 1px;
+    margin-left: -6px;
+    border-top-width: 0;
+    border-bottom-color: #04308D;
 }
 
 .el-popper[x-placement^=top] .popper__arrow::after {
-  bottom: 1px;
-  margin-left: -6px;
-  border-top-color: #326AFF !important;
-  border-bottom-width: 0;
+    bottom: 1px;
+    margin-left: -6px;
+    border-top-color: #326AFF !important;
+    border-bottom-width: 0;
 }
 
 :deep(.el-picker-panel) {
-  background: #04308D !important;
-  color: #fff;
+    background: #04308D !important;
+    color: #fff;
 }
 
 :deep(.el-date-table td.in-range div, .el-date-table td.in-range div:hover, .el-date-table.is-week-mode .el-date-table__row.current div, .el-date-table.is-week-mode .el-date-table__row:hover div) {
-  background-color: #326AFFc9 !important;
+    background-color: #326AFFc9 !important;
 }
 
 .el-date-range-picker__time-header {
-  border-bottom: 1px solid #326AFF;
+    border-bottom: 1px solid #326AFF;
 }
 
 .el-date-range-picker__content.is-left {
-  border-right: 1px solid #326AFF;
+    border-right: 1px solid #326AFF;
 }
 
 :deep(.el-popper).is-light .el-popper__arrow::before {
-  border: 1px solid #326AFF;
-  background: #04308D;
-  right: 0;
+    border: 1px solid #326AFF;
+    background: #04308D;
+    right: 0;
 }
 
 .el-popper.is-pure {
-  border: 1px solid #326AFF;
+    border: 1px solid #326AFF;
 }
 
 :deep(.el-input__wrapper) {
-  border: 1px solid #ffffff !important;
-  box-shadow: 0 0 0 0px #151515 inset;
-  background: #151515 !important;
+    border: 1px solid #ffffff !important;
+    box-shadow: 0 0 0 0px #151515 inset;
+    background: #151515 !important;
 }
 
 :deep(.el-input__wrapper) .el-input__inner {
-  background: #151515 !important;
-  font-size: 14px;
-  font-weight: 400;
-  color: #FFFFFF;
+    background: #151515 !important;
+    font-size: 14px;
+    font-weight: 400;
+    color: #FFFFFF;
 }
 
 :deep(.el-picker-panel__footer) .el-button.is-text {
-  color: #fff;
-  border: 0 solid transparent;
-  background-color: transparent;
+    color: #fff;
+    border: 0 solid transparent;
+    background-color: transparent;
 }
 
 :deep(.el-picker-panel__footer) .el-button {
-  background-color: #326aff;
-  border: 1px solid #326AFF;
-  color: #fff;
+    background-color: #326aff;
+    border: 1px solid #326AFF;
+    color: #fff;
 }
 
 :deep(.el-button).is-text:not(.is-disabled):hover {
-  background-color: #326aff;
+    background-color: #326aff;
 }
 
 .in-range {
-  color: #326aff;
+    color: #326aff;
 
 }
 </style>
