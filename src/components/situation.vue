@@ -2,7 +2,7 @@
 import { ref, reactive, onMounted, nextTick } from "vue";
 import type { TableColumnCtx } from 'element-plus'
 import { ArrowRightBold } from '@element-plus/icons-vue'
-const activeNames = ref(["1", "2", "3", "4", "5", "6", "7"]); //默认展开第几列
+const activeNames = ref(["1", "2", "3", "4", "5", "6", "7","8"]); //默认展开第几列
 import { dainLiuData } from "@/utils/echars1.ts"
 import { currentFun, healthEchat, barEchat, getLastWeekTime, getCurrentTime } from "@/utils/utils.ts"
 
@@ -832,7 +832,9 @@ onMounted(async () => {
                         </div>
                     </div>
                 </div>
-                
+            </el-collapse-item>
+            <el-collapse-item title="--柜内温度" name="8" :icon="ArrowRightBold">
+
             </el-collapse-item>
         </el-collapse>
     </div>
