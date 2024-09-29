@@ -760,10 +760,9 @@ onMounted(async () => {
                     </div>  
                 </div>  
                 <div class="pa-[15px] box-border flex">
-          <div class="bg-#151515 w-[450px] h-[120px] items-center">
+          <div class="bg-#151515 w-[350px] h-[120px] items-center">
             <div
-              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
-              开始时间</div>
+              class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]"> 开始时间</div>
             <div>
               <div class="demo-date-picker">
                 <div class="block">
@@ -773,7 +772,7 @@ onMounted(async () => {
               </div>
             </div>
           </div>
-          <div class="ml-[20px] bg-#151515 w-[450px] h-[120px]">
+          <div class="ml-[20px] bg-#151515 w-[350px] h-[120px]">
             <div
               class="w-[100%] font-size-[1rem] text-align-center p-t-[12px] flex flex-col items-center justify-center m-b-[20px]">
               结束时间</div>
@@ -785,6 +784,9 @@ onMounted(async () => {
                 </div>
               </div>
             </div>
+          </div>
+          <div class="ml-[20px] bg-#151515 w-[150px] h-[120px] flex items-center justify-center font-size-1.5em cursor-pointer">
+            查询
           </div>
         </div>
             </el-collapse-item>
