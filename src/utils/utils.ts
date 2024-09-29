@@ -1,5 +1,27 @@
 import * as echarts from "echarts";
 
+// 获取当前时间前一周的时间 格式为 YYYY-MM-DD 
+export const getLastWeekTime = () => {
+  const now = new Date();
+  now.setDate(now.getDate() - 7); // 获取当前时间的前一周
+
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1; // 月份从0开始
+  const day = now.getDate();
+
+  return `${year}-${month}-${day}`;
+};
+  
+// 获取当前时间 格式为 YYYY-MM-DD 
+export const getCurrentTime = () => {
+  const now = new Date();
+  const year = now.getFullYear();   
+  const month = now.getMonth() + 1; // 月份从0开始
+  const day = now.getDate();
+
+  return `${year}-${month}-${day}`;
+};
+
 // 封装毫秒时间转换方法
 export const formatTimestampWithMicroseconds = (timestamp: number) => {
   // 提取秒和微秒部分
@@ -223,7 +245,8 @@ export const currentFun = (
 
 interface numType {
   name: string;
-  num: number;
+  unit:string;
+  number: number;
 }
 // echars饼状图健康度封装
 export const healthEchat = (dom: { value: HTMLElement | null | undefined }, chartObj: numType) => {
@@ -383,8 +406,9 @@ export const healthEchat = (dom: { value: HTMLElement | null | undefined }, char
 };
 // echars半饼状图封装
 export const barEchat = (dom: { value: HTMLElement | null | undefined }, chartObj: numType) => {
+  // const chartInstance = echarts.init(document.getElementById(dom.value));
   const chartInstance = echarts.init(dom.value);
-  var percent = 12.3; //百分数
+  var percent = chartObj.number; //数值
   var color_percent0 = ""
   var color_percent100 = ""
   var dotArray: number[] = [];
@@ -420,17 +444,18 @@ export const barEchat = (dom: { value: HTMLElement | null | undefined }, chartOb
       x: "50%",
       y: "45%",
       textAlign: "center",
-      top: "60%", //字体的位置
-      text: "0℃VCB-IN-A温度",
+      top: "55%", //字体的位置
+      // text: '{a|'+ chartObj.name +'}\n{b|Additional Info}',
+      text: chartObj.name,
       textStyle: {
         fontWeight: "normal",
         color: "#FFF",
-        fontSize: 20,
+        fontSize: 10,
       },
       subtextStyle: {
         //副标题的文字的样式
         fontWeight: "bold",
-        fontSize: 18,
+        fontSize: 14,
         color: "#3ea1ff",
       },
     },
@@ -462,7 +487,7 @@ export const barEchat = (dom: { value: HTMLElement | null | undefined }, chartOb
     yAxis: {
       show: false,
       name: "万元",
-      max: 200,
+      max: 50, //指示点的位置
       splitLine: {
         lineStyle: {
           type: "dashed",
@@ -474,6 +499,7 @@ export const barEchat = (dom: { value: HTMLElement | null | undefined }, chartOb
         name: "",
         type: "pie",
         radius: ["50%", "70%"],
+        // radius: ["50%", "70%"],
         avoidLabelOverlap: false,
         startAngle: 225,
         color: [
@@ -579,11 +605,11 @@ export const barEchat = (dom: { value: HTMLElement | null | undefined }, chartOb
         itemStyle: {
           normal: {
             borderColor: "transparent",
-            borderWidth: "20",
+            borderWidth: "10",
           },
           emphasis: {
             borderColor: "transparent",
-            borderWidth: "20",
+            borderWidth: "10",
           },
         },
         z: 10,
@@ -601,14 +627,13 @@ export const barEchat = (dom: { value: HTMLElement | null | undefined }, chartOb
         data: [
           {
             value: ((100 - percent) * 270) / 360,
-
             label: {
               normal: {
-                formatter: percent + "℃",
+                formatter: percent + chartObj.unit,
                 position: "center",
                 show: true,
                 textStyle: {
-                  fontSize: "60",
+                  fontSize: "16",  //字体大小
                   fontWeight: "normal",
                   color: "#fff",
                 },
